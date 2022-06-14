@@ -1,0 +1,67 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head}">
+</head>
+
+<body>
+    <header id="intro" class="masthead text-center text-white" style="margin-top: 0px;margin-bottom: 0px;padding-bottom: 280px;">
+        <div class="masthead-content">
+            <div class="container">
+                <h1 class="masthead-heading mb-0" style="font-family: Catamaran, sans-serif;">IP Stresser</h1>
+                <h2 class="masthead-subheading mb-0" style="font-size: 28px;">The next generation Stresser</h2><a class="btn btn-primary btn-xl rounded-pill mt-5" role="button" th:href="@{/users/login}" style="font-family: Acme, sans-serif;margin-right: 20px;width: 169.4px;">Login</a><a class="btn btn-primary btn-xl rounded-pill mt-5" role="button"
+                    th:href="@{/users/register}" style="font-family: Acme, sans-serif;margin-left: 20px;">Register</a></div>
+        </div>
+        <div class="bg-circle-1 bg-circle" style="padding-bottom: 0px;"></div>
+        <div class="bg-circle-2 bg-circle"></div>
+        <div class="bg-circle-3 bg-circle"></div>
+        <div class="bg-circle-4 bg-circle"></div>
+    </header>
+    <div style="background-image: url(assets/img/servers.jpg);"></div>
+    <section style="background-color: #151515;padding-bottom: 150px;background-image: url(assets/img/servers.jpg);background-position: center;background-size: cover;filter: blur(0px);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 offset-lg-3 order-lg-1">
+                    <div class="p-5" style="padding-bottom: 55px;padding-top: 67px;">
+                        <h2 class="display-4" style="color: rgb(223,227,232);padding: 0px;padding-top: 122px;">Feel the entire power</h2>
+                        <p style="color: rgb(246,248,250);">Our services are the most powerful,stable and reliable on the market</p><a class="btn btn-primary d-block btn-xl rounded-pill mt-5" role="button" th:href="@{/plans}" style="font-family: Acme, sans-serif;margin-right: 20px;padding-top: 25px;width: 167px;">Pricing</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="features-blue">
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center">Why we are the best?</h2>
+            </div>
+            <div class="row features">
+                <div class="col-sm-6 col-md-4 item"><i class="fa fa-flash icon"></i>
+                    <h3 class="name">Powerful features</h3>
+                    <p class="description">Feel the power you can't even imagine</p>
+                </div>
+                <div class="col-sm-6 col-md-4 item"><i class="fa fa-clock-o icon"></i>
+                    <h3 class="name">Always available</h3>
+                    <p class="description">We are  always here when you need our services.</p>
+                </div>
+                <div class="col-sm-6 col-md-4 item"><i class="fa fa-money icon"></i>
+                    <h3 class="name">Low Pricing and Anonymized payment</h3>
+                    <p class="description">Our prices are the lowest on the market.We are working with cryptocurrencies to to ensure customer privacy and security</p>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-3 offset-md-3 offset-lg-4 item"><i class="fa fa-comment icon"></i>
+                    <h3 class="name">24/7 Support</h3>
+                    <p class="description">Our support is here to help you</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-basic">
+        <footer th:insert="~{fragments/footer}">
+
+        </footer>
+    </div>
+   <th:block th:insert="~{fragments/scripts}" >
+
+   </th:block>
+</body>
+
+</html>

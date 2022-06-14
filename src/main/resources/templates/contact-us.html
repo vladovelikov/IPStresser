@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+    </nav>
+    <div class="contact-clean" style="background-color: rgb(248,248,248);">
+        <form method="post" action="mailto:test@abv.bg" >
+            <h2 class="text-center">Contact us</h2>
+            <div class="form-group"><input class="form-control" type="text" name="name" placeholder="Name"><small class="form-text text-danger">Please enter correct name</small></div>
+            <div class="form-group"><input class="form-control is-invalid" type="email" name="email" placeholder="Email"><small class="form-text text-danger">Please enter a correct email address.</small></div>
+            <div class="form-group"><textarea class="form-control" name="message" placeholder="Message" rows="14"></textarea><small class="form-text text-danger">Please enter correct text</small></div>
+            <div class="form-group"><button class="btn btn-primary rounded-pill " type="submit">Send </button></div>
+        </form>
+    </div>
+    <div class="footer-basic">
+        <footer th:insert="~{fragments/footer}">
+
+        </footer>
+    </div>
+    <th:block th:insert="~{fragments/scripts}">
+
+    </th:block>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+    </nav>
+    <div class="container mb-5 mt-5">
+        <div class="row card-deck flex-column flex-md-row mb-3">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="card card-pricing text-center px-3 mb-4"><span class="h6 w-60 mx-auto px-4 py-1 bg-primary text-white shadow-sm" th:text="${plan.type}"><br></span>
+                    <div class="bg-transparent card-header pt-4 border-0">
+                        <h1 class="h1 font-weight-normal text-primary text-center mb-0"><span class="price" th:text="|  ${plan.price} EUR|"></span><span class="h6 text-muted ml-2"></span></h1>
+                    </div>
+                    <div class="card-body pt-0">
+                        <form th:method="post" th:action="@{/plans/confirm/{id}(id=${id})}">
+                            <ul class="list-unstyled mb-4">
+                                <li th:text="|Duration: ${plan.durationInDays} days.| "></li>
+                                <li th:text="|Max boot time: ${plan.maxBootTimeInSeconds} seconds.|">Max Boot Time</li>
+                                <li th:text="|Max boots per day: ${plan.maxBootsPerDay}|"></li>
+                                <li th:text="|Concurrent attacks: ${plan.servers}|"></li>
+                            </ul>
+                            <select class="form-control mb-4" name="cryptocurrency">
+                                <option th:each="cr:${crypto}" th:text="${cr}" th:value="${cr}"></option>
+
+                            </select>
+
+                            <button class="btn btn-outline-primary mb-3 rounded-pill w-25" type="submit">Purchase</button>
+                            <small th:if="${activationError}" th:text="${activationError}" class="form-text text-center text-danger"></small>
+                        </form>
+                       </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-basic">
+        <footer th:insert="~{fragments/footer}">
+
+        </footer>
+    </div>
+    <th:block th:insert="~{fragments/scripts}">
+
+    </th:block>
+</body>
+
+</html>

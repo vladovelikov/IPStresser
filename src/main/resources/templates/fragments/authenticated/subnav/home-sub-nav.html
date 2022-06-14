@@ -1,0 +1,8 @@
+<th:block xmlns:th="http://www.thymeleaf.org">
+
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item"><a class="nav-link" th:classappend="${#httpServletRequest.getRequestURI() == '/home/launch'?'active':''}" th:href="@{/home/launch}">Launch Attack</a></li>
+            <li class="nav-item"><a class="nav-link" th:classappend="${#httpServletRequest.getRequestURI() == '/home/announcements'?'active':''}" th:href="@{/home/announcements}">Announcements</a></li>
+        </ul>
+
+</th:block>

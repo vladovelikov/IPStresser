@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security>
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+</nav>
+<div class="card">
+    <div class="card-header" th:insert="~{fragments/authenticated/subnav/home-sub-nav}">
+    </div>
+
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 alert alert-danger text-center" sec:authorize="hasAnyAuthority('UNCONFIRMED')">
+                    Your account is not confirmed!Click <a
+                        th:href="@{/users/profile/{username}(username=${#authentication.getName()})}">Here</a> to
+                    continue
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 alert alert-danger text-center" th:if="${!hasUserActivePlan}">
+                    You dont have active plan!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 alert alert-warning text-center" th:if="${!hasRated and hasTransaction}" >
+                    If you like our services you can rate us <a
+                        th:href="@{/about/comments/create}">Here</a>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="si si-list"></i> History and managment <i
+                                style="display: none;" id="manage" class="zmdi zmdi-settings zmdi-hc-spin"></i></h3>
+                        <div class="card-options">
+                            <button id="refreshAttackHistory" class="btn btn-light"><i class="fa fa-refresh"></i>
+                                Refresh
+                            </button>
+                            <button id="clearAttackHistory" class="btn btn-light"><i class="fa fa-trash"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                    <table id="attackHistory" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>HOST</th>
+                            <th>PORT</th>
+                            <th>METHOD</th>
+                            <th>SERVERS</th>
+                            <th>EXPIRES</th>
+                            <th>STATUS</th>
+                        </tr>
+                        </thead>
+                        <tbody id="attackHistoryTBody">
+                        <tr th:each="attack,stats:${attacksHistory}">
+                            <td th:text="${stats.index+1}"></td>
+                            <td th:text="${attack.host}"></td>
+                            <td th:text="${attack.port}"></td>
+                            <td th:text="${attack.method.toString()}"></td>
+                            <td th:text="${attack.servers}"></td>
+                            <td th:text="${#temporals.format(attack.expiresOn, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                            <td th:text="${#temporals.createNow()>attack.expiresOn ? 'Inactive':'Active'}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col d-flex justify-content-center text-center">
+                    <div class="st-card card-header">
+
+                        <div>
+                            <h3 style="color: dark;" class="card-title"> Launch Attack</h3> <i
+                                class="zmdi zmdi-settings zmdi-hc-spin"
+                                id="attackloader" style="display:none"></i>
+
+                        </div>
+                        <div class="card-body">
+                            <form class="form-horizontal" th:object="${attack}" th:method="post"
+                                  th:action="@{/home/launch}">
+                                <div class="row">
+                                    <div class="col-lg-7">
+                                        <div class="form-group">
+                                            <div class="form-material floating">
+                                                <label for="host"><i class="fa fa-terminal"></i> Host</label>
+                                                <input th:field="*{host}" type="text" class="form-control" id="host"
+                                                       name="host"
+                                                       placeholder="0.0.0.0">
+                                                <small th:errors="*{host}" class="form-text text-danger">d</small>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <div class="form-material floating">
+                                                <label for="port"><i class="zmdi zmdi-portable-wifi"></i> Port</label>
+                                                <input th:field="*{port}" type="number" class="form-control" id="port"
+                                                       name="port"
+                                                       placeholder="80">
+                                                <small th:errors="*{port}" class="form-text text-danger">d</small>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <div class="form-material floating">
+                                                <label for="time"><i class="fa fa-clock-o"></i> Time</label>
+                                                <input th:field="*{time}" type="number" class="form-control" id="time"
+                                                       name="time"
+                                                       placeholder="60">
+                                                <small th:errors="*{time}" class="form-text text-danger">d</small>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <label for="method"><i class="zmdi zmdi-view-dashboard"></i> Method</label>
+                                            <select th:field="*{method}" class="form-control" id="method" name="method">
+                                                <option th:each="method:${T(com.stressthem.app.domain.MethodType).values()}"
+                                                        th:text="${method}" th:value="${method}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label"><i class="fa fa-server"></i> Servers </label>
+
+                                    <input th:field="*{servers}" type="number" class="form-control" id="totalservers"
+                                           name="totalservers"
+                                           placeholder="1">
+                                    <small th:errors="*{servers}" class="form-text text-danger">d</small>
+                                    <th:block
+                                            th:text="|Your limit: ${availableAttacks}|"></th:block>
+                                </div>
+
+
+                                <div class="form-group m-b-0">
+                                    <div class="col-sm-offset-3 col-sm-12">
+                                        <button class="btn btn-primary rounded-pill btn-sm btn-block waves-effect waves-light m-1"
+                                                id=" hit" type="submit"><i class="fa fa-bolt"></i> Send
+                                        </button>
+                                        <small th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}"
+                                               class="form-text text-danger">d</small>
+                                    </div>
+                                </div>
+                            </form>
+                            <!--                            <small th:errors="*{global}" class="form-text text-danger">d</small>-->
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{/fragments/footer}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>

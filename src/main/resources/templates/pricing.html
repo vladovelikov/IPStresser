@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'
+>
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav.html}">
+
+</nav>
+<div class="container mb-5 mt-5">
+    <div class="row" style="margin-bottom: 30px;">
+        <div class="col offset-xl-0 text-center"><a th:href="@{/currencies}" target="_blank">Click here to see available
+            currencies with which you can pay</a></div>
+    </div>
+
+
+    <div class="row card-deck flex-column flex-md-row mb-3" th:each="plan:${plans}">
+        <div class="col">
+            <div class="card card-pricing text-center px-3 mb-4"><span
+                    class="h6 w-60 mx-auto px-4 py-1 bg-primary text-white shadow-sm" th:text="${plan.type}"></span>
+                <div class="bg-transparent card-header pt-4 border-0">
+                    <h1 class="h1 font-weight-normal text-primary text-center mb-0" th:text="|  ${plan.price} EUR|"><span
+                            class="h6 text-muted ml-2">/pm</span></h1>
+                </div>
+                <div class="card-body pt-0">
+                    <ul class="list-unstyled mb-4">
+                        <li th:text="|Duration: ${plan.durationInDays} days.| "></li>
+                        <li th:text="|Max boot time: ${plan.maxBootTimeInSeconds} seconds.|"></li>
+                        <li th:text="|Max boots per day: ${plan.maxBootsPerDay}|"></li>
+                        <li th:text="|Concurrent attacks: ${plan.servers}|"></li>
+                    </ul>
+                    <a class="btn btn-outline-primary mb-3 rounded-pill w-25" type="button" th:href="@{/plans/confirm/{id}(id=${plan.id})}">Buy</a>
+                    <a class="btn btn-primary rounded-pill w-25" type="button"
+                            style="margin-top: -15px;margin-bottom: 0px;margin-right: 0px;margin-left: 25px;" sec:authorize="hasAnyAuthority('ADMIN','ROOT')"
+                            th:href="@{/plans/delete/{id}(id=${plan.id})}">Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>

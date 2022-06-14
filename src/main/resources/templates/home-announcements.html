@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'>
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+    </nav>
+    <div class="card">
+        <div class="card-header" th:insert="~{fragments/authenticated/subnav/home-sub-nav}">
+
+        </div>
+        <div class="card-body">
+            <div class="row" th:each="announcement:${announcements}">
+                <div class="col">
+                    <h4 th:text="${announcement.title}"></h4>
+                    <p th:text="${#temporals.format(announcement.addedOn, 'dd-MM-yyyy HH:mm:ss')}"></p>
+                    <p th:text="${announcement.description}"></p>
+                    <a th:href="@{/home/announcements/delete/{id}(id=${announcement.id})}"
+                       sec:authorize="hasAnyAuthority('ADMIN','ROOT')" class="btn btn-primary rounded-pill" type="button">Delete</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-basic">
+        <footer th:insert="~{fragments/footer}">
+
+        </footer>
+    </div>
+    <th:block th:insert="~{fragments/scripts}">
+
+    </th:block>
+</body>
+
+</html>

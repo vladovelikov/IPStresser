@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec=http://www.thymeleaf.org/extras/spring-security>
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+</nav>
+<div class="container profile profile-view" id="profile">
+    <!--    <div class="row">-->
+    <!--        <div class="col offset-lg-0">-->
+    <!--            <div class="alert alert-warning beautiful" role="alert">-->
+    <!--                <button type="button" class="close" data-dismiss="alert" aria-label="Close">-->
+    <!--                    <span aria-hidden="true">&times;</span>-->
+    <!--                </button>-->
+    <!--                <strong>Warning!</strong>Errors here!-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <div class="row">
+        <div id="confirmationDiv" class="col-12 alert alert-danger text-center"
+             sec:authorize="hasAnyAuthority('UNCONFIRMED')">
+            <p id="confirmationStatus">Your account is not confirmed!</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+
+
+            </button>
+            <button id="sendVerificationCodeBtn" class="btn btn-light ml-3 rounded-pill">Send verification code</button>
+            <div id="inputCodeDiv" style="display: none">
+
+                    <div id="inputConfirmationDiv" class="d-flex justify-content-center input-group-sm form-group row mt-2">
+                        <div class="col-xs-3 " >
+                            <input name="code" id="verificationCode" type="text" class="form-control" placeholder="Enter the code"
+                                   aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        </div>
+
+                        <button id="submitVerificationCode" class="btn btn-light ml-3 rounded-pill" type="submit">Submit
+                        </button>
+                    </div>
+
+             
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="form-row profile-row">
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="media">
+                        <div><img class="rounded-circle mr-3" style="height: 85px;width: 85px;"
+                                  th:src="${userEdit.imageUrl.equals('') ? '\assets\img\default_user_icon.png' : userEdit.imageUrl}">
+                        </div>
+                        <div class="media-body">
+                            <ul class="list-unstyled fa-ul">
+                                <li><i class="fa fa-user fa-li"></i><a href="#"
+                                                                       th:text="|Username: ${userEdit.username}|"></a>
+                                </li>
+                                <li><i class="fa fa-envelope fa-li"></i><a href="#"
+                                                                           th:text="|Email: ${userEdit.email}|"></a>
+                                </li>
+                                <li><i class="fas fa-users fa-li"></i><a href="#"
+                                                                         th:text="|Roles: ${userEdit.roles}|"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                    <h1 class="text-center" style="font-size: 25px;">Current plan</h1>
+                    <div class="col">
+
+                        <div th:if="${userEdit.plan==null}"><i class="fa fa-remove"></i>
+                            <p class="text-center d-inline-block"><strong>You dont have active plan</strong></p>
+                        </div>
+                        <div th:unless="${userEdit.plan==null}"
+                             class="card card-pricing text-center px-3 mb-4"><span
+                                class="h6 w-60 mx-auto px-4 py-1 bg-primary text-white shadow-sm"
+                                th:text="${userEdit.plan.type}"></span>
+                            <div class="bg-transparent card-header pt-4 border-0">
+                                <h1 class="h1 font-weight-normal text-primary text-center mb-0"
+                                    th:text="|${userEdit.plan.price} EUR|"></h1>
+                            </div>
+                            <div class="card-body pt-0">
+                                <ul class="list-unstyled mb-4">
+                                    <li th:text="|Duration: ${userEdit.plan.durationInDays} days.| "></li>
+                                    <li th:text="|Max boot time: ${userEdit.plan.maxBootTimeInSeconds} seconds.|"></li>
+                                    <li th:text="|Max boots per day: ${userEdit.plan.maxBootsPerDay}|"></li>
+                                    <li th:text="|Concurrent attacks: ${userEdit.plan.servers}|"></li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-8">
+            <h1 class="text-center" style="font-size: 25px;">Profile edit</h1>
+            <form th:method="post" th:object="${userEdit}"
+                  th:action="@{/users/profile/{username}(username=${userEdit.username})}">
+
+
+                <div class="form-group"><label>Username</label><input th:field="*{username}"
+                                                                      class="form-control" type="text"
+                                                                      name="username"><small
+                        th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                        class="form-text text-danger"></small></div>
+                <hr>
+                <div class="form-group"><label>Email </label><input th:field="*{email}"
+                                                                    class="form-control" type="email"
+
+                                                                    name="imageUrl"><small
+                        th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
+                        class="form-text text-danger"></small></div>
+                <div class="form-group"><label>Profile Picture Url</label><input th:field="*{imageUrl}"
+                                                                                 class="form-control" type="text"
+
+                                                                                 name="imageUrl"><small
+                        th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"
+                        class="form-text text-danger"></small></div>
+                <div class="form-row">
+                    <h1>Write your current/new password!</h1>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group"><label>Password </label><input th:field="*{passwordWrapper.password}"
+
+                                                                               class="form-control" type="password"
+                                                                               name="password"
+                        ><small th:if="${#fields.hasErrors('passwordWrapper.password')}"
+                                th:errors="*{passwordWrapper.password}"
+                                class="form-text text-danger"></small></div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="form-group"><label>Confirm Password</label><input
+                                th:field="*{passwordWrapper.confirmPassword}"
+                                class="form-control"
+                                type="password"
+                                name="confirmpass"
+                        ><small th:if="${#fields.hasErrors('passwordWrapper')}"
+                                th:errors="*{passwordWrapper}"
+                                class="form-text text-danger"></small></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div class="col-md-12 content-right">
+                        <button type="submit" class="btn btn    -light btn btn-primary rounded-pill"
+
+                                style="padding-right: 35px;padding-left: 35px;">Save
+                            changes
+                        </button>
+                        <a class="btn btn-light btn btn-primary rounded-pill" role="button"
+                           th:href="@{/users/profile/delete/{id}(id=*{id})}"
+                           style="margin-right: 35px;">Delete profile</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>

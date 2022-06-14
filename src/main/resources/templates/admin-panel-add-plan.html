@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+</nav>
+<div class="card">
+    <div class="card-header" th:insert="~{fragments/nav-admin-panel}">
+
+    </div>
+    <div class="card-body">
+        <div class="container">
+
+            <div class="row register-form">
+                <div class="col-md-8 offset-md-2">
+                    <div class="contact-clean">
+                        <form th:object="${plan}" th:method="post" th:action="@{/admin/add-plan}"
+                              style="background-color: rgb(252,250,250);">
+                            <h2 class="text-center">Add plan</h2>
+                            <div class="form-group"><input th:field="*{type}" class="form-control" type="text" name="type"
+                                                           placeholder="Type of the plan(vip,diamond..)"
+                                                           required="">
+                                <small th:if="${#fields.hasErrors('type')}"  th:errors="*{type}" class="form-text text-danger"></small>
+                            </div>
+
+                            <div class="form-group"><input th:field="*{durationInDays}" class="form-control" type="number" name="duration"
+                                                           placeholder="Duration of the plan(in days)"
+                                                           required="">
+                                <small th:if="${#fields.hasErrors('durationInDays')}"  th:errors="*{durationInDays}" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group"><input th:field="*{maxBootTimeInSeconds}" class="form-control" type="number" name="maxBootTime"
+                                                           placeholder="Maximum Boot Time" required="">
+                                <small th:if="${#fields.hasErrors('maxBootTimeInSeconds')}"  th:errors="*{maxBootTimeInSeconds}" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group"><input th:field="*{maxBootsPerDay}" class="form-control" type="number" name="maxBootsPerDay"
+                                                           placeholder="Maximum Boots Per Day" required="">
+                                <small th:if="${#fields.hasErrors('maxBootsPerDay')}"  th:errors="*{maxBootsPerDay}" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group"><input th:field="*{servers}" class="form-control" type="number" name="maxConcurrent"
+                                                           placeholder="Concurrent attacks" required="">
+                                <small th:if="${#fields.hasErrors('servers')}"  th:errors="*{servers}" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group"><input th:field="*{price}" class="form-control" type="number" name="price"
+                                                           placeholder="Price of the plan" required="">
+                                <small th:if="${#fields.hasErrors('price')}"  th:errors="*{price}" class="form-text text-danger"></small>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary rounded-pill" type="submit">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>

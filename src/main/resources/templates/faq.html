@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+</nav>
+<div class="container" style="padding-top:40px;padding-bottom:40px;">
+    <div class="container">
+        <div class="panel-group" id="accordion">
+            <div class="faqHeader">General questions</div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion"
+                                               href="#collapseOne">Is account registration required?</a></h4></div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">Yes</div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse"
+                                               data-parent="#accordion" href="#collapseEleven">What is the currency used
+                        for all transactions?</a></h4></div>
+                <div id="collapseEleven" class="panel-collapse collapse">
+                    <div class="panel-body">You can pay only with cryptocurrencies.</div>
+                </div>
+            </div>
+            <div class="faqHeader">Stresser</div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse"
+                                               data-parent="#accordion" href="#collapseTwo">How powerful are the
+                        attacks?</a></h4></div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">Very powerful.</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button"
+     th:insert="~{fragments/nav}">
+
+</nav>
+<div class="login-clean"
+     style="background-image: url(/assets/img/sander-weeteling-4I41IQtmSs0-unsplash.jpg);background-size: cover;">
+    <form th:action="@{/users/login}" th:method="post" style="background-color: rgb(69,46,46);">
+        <h1 class="text-center" style="color: rgb(235,235,235);">Login</h1>
+        <div class="illustration"><i class="icon ion-ios-locked"></i></div>
+        <div class="form-group"><input class="border rounded form-control" type="text" name="username"
+                                       placeholder="Username"></div>
+        <div class="form-group"><input class="border rounded form-control" type="password" name="password"
+                                       placeholder="Password"></div>
+        <div class="form-group">
+            <button class="btn btn-primary btn-block" type="submit">Log In</button>
+        </div>
+        <small th:if="${param.error!=null}" class="form-text text-center text-danger">Invalid username or
+            password!</small>
+        <a class="forgot" th:href="@{/users/register}"
+           style="color: #ebebeb;">Dont have account?</a></form>
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>

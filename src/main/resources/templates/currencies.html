@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'
+>
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+</nav>
+<div class="article-list">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">Available cryptocurrencies with which you can pay</h2>
+            <p class="text-center"><strong>We support wide range of cryptocurrencies</strong></p>
+        </div>
+        <div class="row articles">
+            <div class="col-sm-6 item" th:each="cryptocurrency:${cryptos}">
+                <div class="col-md-12 ">
+                    <img class="img-fluid  " style="width: 240px ;height: 160px"
+                         th:src="${cryptocurrency.imageUrl ?: '\assets\img\no_image.png'}">
+                </div>
+                <div class="col">
+                    <h3 class="name" th:text="${cryptocurrency.title}"></h3>
+                    <p class="description" th:text="${cryptocurrency.description}"></p>
+                </div>
+                <div class="col offset-lg-0 text-center">
+                    <a th:href="@{/currencies/delete/{id}(id=${cryptocurrency.id})}" sec:authorize="hasAnyAuthority('ADMIN','ROOT')"
+                       class="btn btn-primary rounded-pill" type="button"
+                       style="margin-top: 39px;">Delete</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>

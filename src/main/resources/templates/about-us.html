@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'>
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body id="page-top">
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav.html}">
+
+</nav>
+<header class="d-flex masthead" style="background-image: url(/assets/img/server-about-us.jpg);">
+    <div class="container my-auto text-center" style="color: white;font-family: Catamaran">
+        <h1 class="mb-1" style="font-size: 60px">StressThem</h1>
+        <h4 class="mb-5">&nbsp;The&nbsp;№ 1 stresser on the market<br><br></h4><a
+            class="btn btn-primary btn-xl js-scroll-trigger rounded-pill" role="button" href="#about">Find Out More</a>
+        <div class="overlay"></div>
+    </div>
+</header>
+<section id="about" class="content-section mt-5">
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h2>Why we are the best?</h2>
+                <p class="lead mb-5"><span><br>StressThem is one of the most powerful, stable and reliable IP Stresser on the booter market. Our IP Stresser is always online At any day or time, we will always be providing you with a working service.<br><br></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="features-blue">
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center">What we offer?</h2>
+            </div>
+            <div class="row features">
+                <div class="col-sm-6 col-md-4 item"><i class="fa fa-flash icon"></i>
+                    <h3 class="name">Powerful features</h3>
+                    <p class="description">Feel the power you can't even imagine</p>
+                </div>
+                <div class="col-sm-6 col-md-4 item"><i class="fa fa-clock-o icon"></i>
+                    <h3 class="name">Always available</h3>
+                    <p class="description">We are always here when you need our services.</p>
+                </div>
+                <div class="col-sm-6 col-md-4 item"><i class="fa fa-money icon"></i>
+                    <h3 class="name">Low Pricing and Anonymized payment</h3>
+                    <p class="description">Our prices are the lowest on the market.We are working with cryptocurrencies
+                        to
+                        to ensure customer privacy and security</p>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-3 offset-md-3 offset-lg-4 item"><i class="fa fa-comment icon"></i>
+                    <h3 class="name">24/7 Support</h3>
+                    <p class="description">Our support is here to help you</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="comments" class="testimonials text-center mt-3" style="margin-bottom: 250px">
+    <div class="container">
+        <h2 class="mb-5">What people are saying...</h2>
+        <div class="row">
+            <div class="col-lg-4" th:each="comment:${@commentServiceImpl.getAllCommentsSortedByRatingDesc()}">
+                <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img
+                        style="width: 150px!important;height: 150px!important;" class="rounded-circle img-fluid mb-3"
+                        th:src="${comment.getAuthor().getImageUrl() == '' ? '/assets/img/no_image.png' : comment.getAuthor().getImageUrl()}"/>
+                    <h5 th:text="${comment.getAuthor().getUsername()}"></h5>
+                    <th:block th:each="number:${#numbers.sequence(1,comment.getRate())}">
+                        <i class="fas fa-star"></i>
+                    </th:block>
+                    <p th:text="${comment.getDescription()}" class="font-weight-light mb-0"></p>
+                    <a class="btn btn-primary rounded-pill mt-3" type="button"
+                       sec:authorize="hasAnyAuthority('ADMIN','ROOT')"
+                       th:href="@{/about/comments/delete/{id}(id=${comment.getId()})}">Delete</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="callout">
+    <div class="container text-center join-now">
+        <h1 class="mx-auto mb-3"><span>Join us&nbsp;</span>
+        </h1><a class="btn btn-primary lg rounded-pill pb-2 pt-2 pl-5 pr-5" role="button"
+                th:href="@{/users/login}">Sign up</a></div>
+</section>
+
+
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer.html}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+</body>
+
+</html>

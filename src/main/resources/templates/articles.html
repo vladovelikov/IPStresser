@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec='http://www.thymeleaf.org/extras/spring-security'
+>
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav}">
+
+    </nav>
+    <div class="article-list">
+        <div class="container">
+            <div class="intro">
+                <h2 class="text-center">Latest Articles</h2>
+                <p class="text-center">Here you can find the latest articles published by us.</p>
+            </div>
+            <div class="row articles">
+                <div th:each="article:${articles}" class="col-sm-6 col-md-4 item">
+                    <a th:href="@{/articles/{id}(id=${article.id})}">
+                    <img class="img-fluid" style="width: 240px ;height: 160px" th:src="${article.imageUrl ?: '\assets\img\no_image.png'}">
+                    </a>
+                    <h3 class="name" th:text="${article.title}"></h3>
+                    <p class="description" th:text="${#strings.substring(article.description,0,10)+'...'}"></p>
+                    <p class="text-center" th:text="${#temporals.format(article.addedOn, 'dd-MM-yyyy HH:mm:ss')}"></p>
+                    <a class="action" th:href="@{/articles/{id}(id=${article.id})}"><i class="fa fa-arrow-circle-right"></i></a>
+                    <a class="btn btn-primary rounded-pill w-25 " type="button"
+                       style="margin-top: 20px;margin-bottom: 0px;margin-right: 0px;margin-left: 0px;" sec:authorize="hasAnyAuthority('ADMIN','ROOT')"
+                       th:href="@{/articles/delete/{id}(id=${article.id})}">Delete
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="footer-basic">
+        <footer th:insert="~{fragments/footer.html}">
+
+        </footer>
+    </div>
+    <th:block th:insert="~{fragments/scripts}">
+
+    </th:block>
+</body>
+
+</html>

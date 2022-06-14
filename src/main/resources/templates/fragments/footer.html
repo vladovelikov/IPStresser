@@ -1,0 +1,18 @@
+<th:block xmlns:th="http://www.thymeleaf.org"
+          xmlns:sec='http://www.thymeleaf.org/extras/spring-security'>
+    <div class="social"><a href="#"><i class="icon ion-social-instagram"></i></a><a href="#"><i class="icon ion-social-facebook"></i></a></div>
+    <ul class="list-inline">
+        <li class="list-inline-item"><a th:href="@{/index}">Home</a></li>
+        <th:block sec:authorize="isAnonymous()">
+            <li class="list-inline-item"><a th:href="@{/users/register}">Register</a></li>
+            <li class="list-inline-item"><a th:href="@{/users/login}">Login</a></li>
+        </th:block>
+        <li class="list-inline-item"><a th:href="@{/plans}">Pricing</a></li>
+<!--        <li class="list-inline-item"><a href="#">Privacy Policy</a></li>-->
+        <li class="list-inline-item"><a th:href="@{/articles}">News</a></li>
+        <li class="list-inline-item"><a th:href="@{/faq}">FAQ</a></li>
+        <li class="list-inline-item"><a th:href="@{/contact}">Contact Us</a></li>
+        <li class="list-inline-item"><a th:href="@{/About}">About Us</a></li>
+    </ul>
+    <p class="copyright">Stress Them © 2020</p>
+</th:block>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{fragments/head}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" th:insert="~{fragments/nav.html}">
+
+</nav>
+<div class="card">
+    <div class="card-header" th:insert="~{fragments/nav-admin-panel}">
+
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-xl-11 offset-lg-3 offset-xl-4">
+
+                </div>
+            </div>
+            <div class="row register-form">
+                <div class="col-md-8 offset-md-2">
+                    <div class="contact-clean">
+                        <form th:object="${article}" th:method="post" th:action="@{/admin/add-article}"
+                              style="background-color: rgb(252,250,250);">
+                            <h2 class="text-center">Add article</h2>
+                            <div class="form-group"><input th:field="*{title}" class="form-control" type="text"
+                                                           name="title"
+                                                           placeholder="Title" required="">
+                                <small  th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="form-text text-danger"></small></div>
+                            <div class="form-group"><input th:field="*{imageUrl}" class="form-control" type="text"
+                                                           name="imageUrl"
+                                                           placeholder="Image url">
+                                <small  th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="form-text text-danger"></small></div>
+                            <div class="form-group"><textarea th:field="*{description}" class="form-control"
+                                                              name="description" placeholder="Description"
+                                                              rows="14" required=""></textarea>
+                                <small  th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="form-text text-danger"></small></div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary rounded-pill" type="submit">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer-basic">
+    <footer th:insert="~{fragments/footer}">
+
+    </footer>
+</div>
+<th:block th:insert="~{fragments/scripts}">
+
+</th:block>
+
+</body>
+
+</html>
