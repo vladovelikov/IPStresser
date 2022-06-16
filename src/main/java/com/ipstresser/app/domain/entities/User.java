@@ -12,7 +12,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -57,8 +59,23 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "attacker", cascade = CascadeType.ALL)
+    private List<Attack> attacks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Plan> plans;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Article> articles;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Announcement> announcements;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Cryptocurrency> cryptocurrencies;
+
+    @OneToOne(mappedBy = "author",cascade = CascadeType.REMOVE,orphanRemoval = true)
+    private Comment comment;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
