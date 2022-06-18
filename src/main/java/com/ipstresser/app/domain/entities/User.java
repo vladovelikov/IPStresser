@@ -48,9 +48,9 @@ public class User implements UserDetails {
 
     @Column(name = "registered_on")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime registrationDate;
+    private LocalDateTime registeredOn;
 
-    @OneToOne(mappedBy = "user_id", cascade = CascadeType.REMOVE)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private UserActivePlan userActivePlan;
 
     @ManyToMany(fetch = FetchType.EAGER)
