@@ -9,4 +9,14 @@ public interface UserService {
     UserServiceModel register(UserServiceModel userServiceModel);
 
     void deleteUserById(String id);
+
+    UserServiceModel getUserByUsername(String username);
+
+    void validateUsers(String username, UserServiceModel modified);
+
+    UserServiceModel updateUser(String username, UserServiceModel userServiceModel);
+
+    void sendConfirmationEmail(String username);
+
+    boolean confirmConfirmationCode(String code, String username);
 }

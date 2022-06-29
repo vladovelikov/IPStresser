@@ -32,12 +32,12 @@ public class UserActivePlan {
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     private Plan plan;
 
-    @Column(name = "left_days")
+    @Column
     @Positive
     @NotNull
     private int leftDays;
 
-    @Column(name = "left_attacks_for_the_day")
+    @Column
     @PositiveOrZero(message = "Your daily limit is reached!")
     @NotNull
     private int leftAttacksForTheDay;
