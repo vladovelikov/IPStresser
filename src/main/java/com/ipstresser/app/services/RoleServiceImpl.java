@@ -6,6 +6,8 @@ import com.ipstresser.app.services.interfaces.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoleServiceImpl implements RoleService {
 
@@ -18,5 +20,10 @@ public class RoleServiceImpl implements RoleService {
 
     public Role getRoleByName(String name) {
         return this.roleRepository.findRoleByName(name);
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return this.roleRepository.findAll();
     }
 }

@@ -1,9 +1,6 @@
 package com.ipstresser.app.domain.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,10 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -76,6 +70,25 @@ public class User implements UserDetails {
 
     @OneToOne(mappedBy = "author",cascade = CascadeType.REMOVE,orphanRemoval = true)
     private Comment comment;
+
+    public User (String username, String password, String email, String imageUrl, LocalDateTime registeredOn, UserActivePlan userActivePlan, Set<Role> roles,
+                 List<Attack> attacks, List<Plan> plans, List<Article> articles,
+                 List<Announcement> announcements, List<Cryptocurrency> cryptocurrencies, Comment comment) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.imageUrl = imageUrl;
+        this.registeredOn = registeredOn;
+        this.userActivePlan = userActivePlan;
+        this.roles = roles;
+        this.attacks = attacks;
+        this.plans = plans;
+        this.articles = articles;
+        this.announcements = announcements;
+        this.cryptocurrencies = cryptocurrencies;
+        this.comment = comment;
+
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
