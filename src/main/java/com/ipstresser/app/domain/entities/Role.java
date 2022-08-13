@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
@@ -26,7 +25,9 @@ public class Role implements GrantedAuthority {
     @Column(name = "name")
     private String name;
 
-    public Role(String role) {}
+    public Role(String name) {
+        this.name = name;
+    }
 
     @Override
     public String getAuthority() {

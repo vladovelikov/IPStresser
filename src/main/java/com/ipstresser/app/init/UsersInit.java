@@ -5,6 +5,7 @@ import com.ipstresser.app.repositories.UserRepository;
 import com.ipstresser.app.services.interfaces.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
+@Order(value = 2)
 public class UsersInit implements CommandLineRunner {
 
     private final RoleService roleService;
@@ -35,7 +37,7 @@ public class UsersInit implements CommandLineRunner {
         if (this.userRepository.count() == 0) {
             User admin = new User("vladimir", passwordEncoder.encode("12345678"), "vladimir.velikov1995@gmail.com",
                     "https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg", LocalDateTime.now(ZoneId.systemDefault()), null,
-                    new HashSet<>(this.roleService.getAllRoles().stream().filter(e->!e.getName().equals("UNCONFIRMED")).collect(Collectors.toSet())), null,
+                    Set.of(this.roleService.getRoleByName("ADMIN")), null,
                     null, null, null, null, null);
 
             User user = new User("test",

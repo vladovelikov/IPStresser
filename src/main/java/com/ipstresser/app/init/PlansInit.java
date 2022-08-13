@@ -6,6 +6,7 @@ import com.ipstresser.app.repositories.PlanRepository;
 import com.ipstresser.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 @Component
+@Order(value = 3)
 public class PlansInit implements CommandLineRunner {
 
     private final UserRepository userRepository;
