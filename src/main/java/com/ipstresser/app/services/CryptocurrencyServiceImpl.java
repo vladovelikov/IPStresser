@@ -2,6 +2,7 @@ package com.ipstresser.app.services;
 
 import com.ipstresser.app.domain.entities.Cryptocurrency;
 import com.ipstresser.app.domain.models.service.CryptocurrencyServiceModel;
+import com.ipstresser.app.exceptions.CryptocurrencyNotFoundException;
 import com.ipstresser.app.repositories.CryptocurrencyRepository;
 import com.ipstresser.app.services.interfaces.CryptocurrencyService;
 import org.modelmapper.ModelMapper;
@@ -27,6 +28,14 @@ public class CryptocurrencyServiceImpl implements CryptocurrencyService {
         List<Cryptocurrency> cryptocurrencies = this.cryptocurrencyRepository.findAll();
         return List.of(this.modelMapper.map(cryptocurrencies, CryptocurrencyServiceModel.class));
     }
+
+    @Override
+    public CryptocurrencyServiceModel getCryptocurrencyByName(String name) {
+        return this.modelMapper.map(
+                this.cryptocurrencyRepository.findByTitle(name).orElseThrow(() -> new CryptocurrencyNotFoundException("Cryptocurrency is not found.")),
+                CryptocurrencyServiceModel.class);
+    }
+
 
     @Override
     public void deleteById(String id) {

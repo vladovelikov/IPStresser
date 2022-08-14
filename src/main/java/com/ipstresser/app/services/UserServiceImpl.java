@@ -1,13 +1,16 @@
 package com.ipstresser.app.services;
 
+import com.ipstresser.app.domain.entities.Cryptocurrency;
+import com.ipstresser.app.domain.entities.Plan;
 import com.ipstresser.app.domain.entities.User;
+import com.ipstresser.app.domain.entities.UserActivePlan;
+import com.ipstresser.app.domain.models.service.TransactionServiceModel;
 import com.ipstresser.app.domain.models.service.UserServiceModel;
 import com.ipstresser.app.exceptions.DuplicatedEmailException;
 import com.ipstresser.app.exceptions.DuplicatedUsernameException;
+import com.ipstresser.app.exceptions.UserPlanActivationException;
 import com.ipstresser.app.repositories.UserRepository;
-import com.ipstresser.app.services.interfaces.ConfirmationService;
-import com.ipstresser.app.services.interfaces.RoleService;
-import com.ipstresser.app.services.interfaces.UserService;
+import com.ipstresser.app.services.interfaces.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,14 +29,22 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationService confirmationService;
     private final RoleService roleService;
+    private final PlanService planService;
+    private final CryptocurrencyService cryptocurrencyService;
+    private final TransactionService transactionService;
+    private final UserActivePlanService userActivePlanService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ConfirmationService confirmationService, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ConfirmationService confirmationService, RoleService roleService, PlanService planService, CryptocurrencyService cryptocurrencyService, TransactionService transactionService, UserActivePlanService userActivePlanService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.confirmationService = confirmationService;
         this.roleService = roleService;
+        this.planService = planService;
+        this.cryptocurrencyService = cryptocurrencyService;
+        this.transactionService = transactionService;
+        this.userActivePlanService = userActivePlanService;
     }
 
     @Override
@@ -97,6 +108,26 @@ public class UserServiceImpl implements UserService {
         modifyUser(userServiceModel, user);
 
         this.userRepository.save(user);
+        return this.modelMapper.map(user, UserServiceModel.class);
+    }
+
+    @Override
+    public UserServiceModel purchasePlan(String id, String username, String cryptocurrency) {
+        User user = this.userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        Plan plan = this.modelMapper.map(this.planService.getPlanById(id), Plan.class);
+        Cryptocurrency chosenCryptocurrency =
+                this.modelMapper.map(this.cryptocurrencyService.getCryptocurrencyByName(cryptocurrency), Cryptocurrency.class);
+
+        if (user.getUserActivePlan() != null) {
+            throw new UserPlanActivationException("You already have an active plan!");
+        }
+
+        UserActivePlan userActivePlan = new UserActivePlan(plan, plan.getDurationInDays(), plan.getMaxBootsPerDay(),
+                LocalDateTime.now(ZoneId.systemDefault()));
+
+        this.userActivePlanService.saveActivatedPlan(userActivePlan);
+        this.transactionService.saveTransaction(new TransactionServiceModel(user, plan, chosenCryptocurrency, LocalDateTime.now(ZoneId.systemDefault())));
+
         return this.modelMapper.map(user, UserServiceModel.class);
     }
 

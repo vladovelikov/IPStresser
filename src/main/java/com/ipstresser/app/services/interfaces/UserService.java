@@ -16,6 +16,8 @@ public interface UserService {
 
     UserServiceModel updateUser(String username, UserServiceModel userServiceModel);
 
+    UserServiceModel purchasePlan(String id, String username, String cryptocurrency);
+
     void sendConfirmationEmail(String username);
 
     boolean confirmConfirmationCode(String code, String username);
