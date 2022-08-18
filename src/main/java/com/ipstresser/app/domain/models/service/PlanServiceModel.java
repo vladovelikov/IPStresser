@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class PlanServiceModel {
+public class PlanServiceModel extends BaseServiceModel {
 
     @NonNull
     private String type;

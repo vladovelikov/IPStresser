@@ -5,6 +5,7 @@ import com.ipstresser.app.exceptions.PlanNotFoundException;
 import com.ipstresser.app.repositories.PlanRepository;
 import com.ipstresser.app.services.interfaces.PlanService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class PlanServiceImpl implements PlanService {
     private final PlanRepository planRepository;
     private final ModelMapper modelMapper;
 
+    @Autowired
     public PlanServiceImpl(PlanRepository planRepository, ModelMapper modelMapper) {
         this.planRepository = planRepository;
         this.modelMapper = modelMapper;

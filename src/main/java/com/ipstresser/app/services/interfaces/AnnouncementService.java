@@ -1,0 +1,12 @@
+package com.ipstresser.app.services.interfaces;
+
+import com.ipstresser.app.domain.models.service.AnnouncementServiceModel;
+
+import java.util.List;
+
+public interface AnnouncementService {
+
+    List<AnnouncementServiceModel> getAllAnnouncements();
+
+    void deleteById(String id);
+}

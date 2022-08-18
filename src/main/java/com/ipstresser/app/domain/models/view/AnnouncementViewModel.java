@@ -1,24 +1,20 @@
-package com.ipstresser.app.domain.models.service;
+package com.ipstresser.app.domain.models.view;
 
-import com.ipstresser.app.domain.entities.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ArticleServiceModel extends BaseServiceModel {
+public class AnnouncementViewModel {
+
+    private String id;
 
     private String title;
 
     private String description;
 
-    private User author;
-
     private LocalDateTime addedOn;
-
-    private String imageUrl;
 }

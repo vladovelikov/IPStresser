@@ -65,6 +65,7 @@ public class PlanController {
             this.userService.purchasePlan(id, principal.getName(), cryptocurrency);
         } catch (UserPlanActivationException ex) {
             redirectAttributes.addFlashAttribute("activationError", ex.getMessage());
+            return String.format("redirect:/plans/confirm/%s", id);
         }
 
         return "redirect:/home/launch";

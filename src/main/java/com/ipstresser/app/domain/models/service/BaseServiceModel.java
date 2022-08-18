@@ -7,11 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CommentServiceModel extends BaseServiceModel {
+public class BaseServiceModel {
 
-    private int rate;
+    private String id;
 
-    private String description;
-
-    private UserServiceModel author;
 }

@@ -14,11 +14,16 @@ public interface UserService {
 
     void validateUsers(String username, UserServiceModel modified);
 
+    int getUserAvailableAttacks(String username);
+
     UserServiceModel updateUser(String username, UserServiceModel userServiceModel);
 
     UserServiceModel purchasePlan(String id, String username, String cryptocurrency);
 
+    boolean hasUserActivePlan(String username);
+
     void sendConfirmationEmail(String username);
 
     boolean confirmConfirmationCode(String code, String username);
+
 }

@@ -21,6 +21,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public boolean hasUserTransactions(String username) {
+        return this.transactionRepository.getTransactionByUsername(username).isPresent();
+    }
+
+    @Override
     public void saveTransaction(TransactionServiceModel transactionServiceModel) {
         this.transactionRepository.save(
                 this.modelMapper.map(transactionServiceModel, Transaction.class)

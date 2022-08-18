@@ -102,6 +102,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int getUserAvailableAttacks(String username) {
+        User user = this.userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+
+        if (user.getUserActivePlan() == null) {
+            return 0;
+        }
+        return user.getUserActivePlan().getLeftAttacksForTheDay();
+    }
+
+    @Override
     public UserServiceModel updateUser(String username, UserServiceModel userServiceModel) {
         User user = this.userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
 
@@ -129,6 +139,12 @@ public class UserServiceImpl implements UserService {
         this.transactionService.saveTransaction(new TransactionServiceModel(user, plan, chosenCryptocurrency, LocalDateTime.now(ZoneId.systemDefault())));
 
         return this.modelMapper.map(user, UserServiceModel.class);
+    }
+
+    @Override
+    public boolean hasUserActivePlan(String username) {
+        return this.userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!")).getUserActivePlan() != null;
     }
 
     @Override

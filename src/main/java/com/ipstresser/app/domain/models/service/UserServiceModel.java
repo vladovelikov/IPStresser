@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserServiceModel {
+public class UserServiceModel extends BaseServiceModel {
 
     private String username;
 

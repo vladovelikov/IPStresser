@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionServiceModel {
+public class TransactionServiceModel extends BaseServiceModel {
 
     private User user;
     private Plan plan;

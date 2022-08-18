@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CryptocurrencyServiceModel {
+public class CryptocurrencyServiceModel extends BaseServiceModel{
 
     String title;
 

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ArticleServiceModel extends BaseServiceModel {
+public class AnnouncementServiceModel extends BaseServiceModel {
 
     private String title;
 
@@ -19,6 +19,4 @@ public class ArticleServiceModel extends BaseServiceModel {
     private User author;
 
     private LocalDateTime addedOn;
-
-    private String imageUrl;
 }
