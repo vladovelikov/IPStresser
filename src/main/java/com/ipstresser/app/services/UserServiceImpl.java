@@ -1,14 +1,9 @@
 package com.ipstresser.app.services;
 
-import com.ipstresser.app.domain.entities.Cryptocurrency;
-import com.ipstresser.app.domain.entities.Plan;
-import com.ipstresser.app.domain.entities.User;
-import com.ipstresser.app.domain.entities.UserActivePlan;
+import com.ipstresser.app.domain.entities.*;
 import com.ipstresser.app.domain.models.service.TransactionServiceModel;
 import com.ipstresser.app.domain.models.service.UserServiceModel;
-import com.ipstresser.app.exceptions.DuplicatedEmailException;
-import com.ipstresser.app.exceptions.DuplicatedUsernameException;
-import com.ipstresser.app.exceptions.UserPlanActivationException;
+import com.ipstresser.app.exceptions.*;
 import com.ipstresser.app.repositories.UserRepository;
 import com.ipstresser.app.services.interfaces.*;
 import org.modelmapper.ModelMapper;
@@ -19,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -48,6 +44,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserServiceModel> getAllUsers() {
+        return List.of(this.modelMapper.map(this.userRepository.findAll(), UserServiceModel.class));
+    }
+
+    @Override
     public UserServiceModel getUserByEmail(String email) {
         User user = this.userRepository.findUserByEmail(email).orElse(null);
         if (user == null) {
@@ -55,6 +56,16 @@ public class UserServiceImpl implements UserService {
         }
 
         return this.modelMapper.map(user, UserServiceModel.class);
+    }
+
+    @Override
+    public void deleteUserByUsername(String username, String currentName) {
+        if (username.equals(currentName)) {
+            throw new UserDeletionException("You cannot delete your account.");
+        }
+        String id = this.userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!")).getId();
+        this.userRepository.deleteById(id);
     }
 
     public UserServiceModel register(UserServiceModel userServiceModel) {
@@ -164,6 +175,31 @@ public class UserServiceImpl implements UserService {
         }
 
         return isConfirmed;
+    }
+
+    @Override
+    public void changeUserRole(String username, String roleName, String type, String currentUsername) {
+        User user = this.userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+        Role role = this.roleService.getRoleByName(roleName);
+
+        if (currentUsername.equals(username)) {
+            throw new ChangeRoleException("You can change only other user roles.");
+        }
+
+        if (type.equals("Add")) {
+            if (user.getRoles().contains(role)) {
+                throw new ChangeRoleException("This user already has this role.");
+            }
+            user.getRoles().add(role);
+        } else if (type.equals("Remove")) {
+            if (!user.getRoles().contains(role)) {
+                throw new ChangeRoleException("This user does not have this role.");
+            }
+            user.getRoles().remove(role);
+        }
+
+        this.userRepository.save(user);
+
     }
 
     private void modifyUser(UserServiceModel modified, User main) {

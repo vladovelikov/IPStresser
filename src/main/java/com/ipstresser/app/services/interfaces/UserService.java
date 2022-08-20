@@ -2,9 +2,15 @@ package com.ipstresser.app.services.interfaces;
 
 import com.ipstresser.app.domain.models.service.UserServiceModel;
 
+import java.util.List;
+
 public interface UserService {
 
+    List<UserServiceModel> getAllUsers();
+
     UserServiceModel getUserByEmail(String email);
+
+    void deleteUserByUsername(String username, String currentName);
 
     UserServiceModel register(UserServiceModel userServiceModel);
 
@@ -26,4 +32,5 @@ public interface UserService {
 
     boolean confirmConfirmationCode(String code, String username);
 
+    void changeUserRole(String username, String role, String type, String currentUsername);
 }
