@@ -7,4 +7,10 @@ public interface UserActivePlanService {
     void saveActivatedPlan(UserActivePlan userActivePlan);
 
     void decreaseLeftAttacksForTheDay(UserActivePlan userActivePlan);
+
+    void clearExpiredPlans();
+
+    void decreaseLeftDays();
+
+    void refreshLeftAttacks();
 }

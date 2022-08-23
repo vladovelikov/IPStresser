@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserActivePlanServiceImpl implements UserActivePlanService {
 
@@ -35,5 +37,20 @@ public class UserActivePlanServiceImpl implements UserActivePlanService {
         }
 
         this.userActivePlanRepository.save(userActivePlan);
+    }
+
+    @Override
+    public void clearExpiredPlans() {
+        this.userActivePlanRepository.clearExpiredPlans();
+    }
+
+    @Override
+    public void decreaseLeftDays() {
+        this.userActivePlanRepository.decreaseLeftDays();
+    }
+
+    @Override
+    public void refreshLeftAttacks() {
+        this.userActivePlanRepository.refreshLeftAttacksForTheDay();
     }
 }

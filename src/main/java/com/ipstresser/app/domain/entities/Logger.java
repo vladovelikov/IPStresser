@@ -23,6 +23,11 @@ public class Logger {
     @GenericGenerator(name = "uuid-string", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    @Column
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Action action;
+
     @Column(name = "description")
     @NotNull
     private String description;
@@ -36,6 +41,11 @@ public class Logger {
     private LocalDateTime time;
 
 
-
+    public Logger(Action action, String description, User author, LocalDateTime time) {
+        this.action = action;
+        this.description = description;
+        this.author = author;
+        this.time = time;
+    }
 
 }
