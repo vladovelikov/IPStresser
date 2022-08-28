@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,30 +18,22 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User implements UserDetails {
+public class User extends BaseEntity implements UserDetails {
 
-    @Id
-    @GeneratedValue(generator = "uuid-string")
-    @GenericGenerator(name = "uuid-string", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id")
-    private String id;
-
-    @Column(name = "username", unique = true)
     @NotNull
     private String username;
 
-    @Column(name = "password")
-    @NotNull
+    @Column
     private String password;
 
-    @Column(name = "email", unique = true)
-    @NotNull
+    @Column(unique = true)
+    @Email
     private String email;
 
     @Column(columnDefinition = "TEXT")
     private String imageUrl;
 
-    @Column(name = "registered_on")
+    @Column
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime registeredOn;
 
@@ -71,47 +64,28 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "author",cascade = CascadeType.REMOVE,orphanRemoval = true)
     private Comment comment;
 
-    public User (String username, String password, String email, String imageUrl, LocalDateTime registeredOn, UserActivePlan userActivePlan, Set<Role> roles,
-                 List<Attack> attacks, List<Plan> plans, List<Article> articles,
-                 List<Announcement> announcements, List<Cryptocurrency> cryptocurrencies, Comment comment) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.imageUrl = imageUrl;
-        this.registeredOn = registeredOn;
-        this.userActivePlan = userActivePlan;
-        this.roles = roles;
-        this.attacks = attacks;
-        this.plans = plans;
-        this.articles = articles;
-        this.announcements = announcements;
-        this.cryptocurrencies = cryptocurrencies;
-        this.comment = comment;
-
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

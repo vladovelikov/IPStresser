@@ -15,16 +15,10 @@ import javax.validation.constraints.Size;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "comments")
-public class Comment {
-
-    @Id
-    @GeneratedValue(generator = "uuid-string")
-    @GenericGenerator(name = "uuid-string", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id")
-    private String id;
+public class Comment extends BaseEntity {
 
     @Column(name = "rate")
     @NotNull
@@ -42,9 +36,4 @@ public class Comment {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User author;
 
-    public Comment(int rate, String description, User author) {
-        this.rate = rate;
-        this.description = description;
-        this.author = author;
-    }
 }

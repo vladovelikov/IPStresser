@@ -50,7 +50,7 @@ public class HomeController {
     }
 
     @ResponseBody
-    @GetMapping("/launch/refresh")
+    @GetMapping("/launch/clear")
     public ResponseEntity<String> clearAllAttacksForCurrentUser(Principal principal) {
         this.attackService.clearAttacksByUsername(principal.getName());
 

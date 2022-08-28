@@ -37,7 +37,7 @@ public class UsersInit implements CommandLineRunner {
         if (this.userRepository.count() == 0) {
             User admin = new User("vladimir", passwordEncoder.encode("12345678"), "vladimir.velikov1995@gmail.com",
                     "https://i.ytimg.com/vi/WhIrvsbEJ6Q/maxresdefault.jpg", LocalDateTime.now(ZoneId.systemDefault()), null,
-                    Set.of(this.roleService.getRoleByName("ADMIN")), null,
+                    new HashSet<>(this.roleService.getAllRoles().stream().filter(e->!e.getName().equals("UNCONFIRMED")).collect(Collectors.toSet())), null,
                     null, null, null, null, null);
 
             User user = new User("test",

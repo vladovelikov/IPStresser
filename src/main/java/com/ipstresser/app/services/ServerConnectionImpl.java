@@ -2,6 +2,7 @@ package com.ipstresser.app.services;
 
 import com.ipstresser.app.services.interfaces.ServerConnection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,8 +15,11 @@ import java.net.http.HttpResponse;
 @Service
 public class ServerConnectionImpl implements ServerConnection {
 
+    @Value("${machine.ip}")
     private final String MACHINE_IP = null;
+    @Value("${machine.passwordOne}")
     private final String PASSWORD_ONE = null;
+    @Value("${machine.passwordTwo}")
     private final String PASSWORD_TWO = null;
     private final HttpClient httpClient;
 

@@ -13,21 +13,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
-public class Role implements GrantedAuthority {
-
-    @Id
-    @GeneratedValue(generator = "uuid-string")
-    @GenericGenerator(name = "uuid-string", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id")
-    private String id;
+public class Role extends BaseEntity implements GrantedAuthority {
 
     @Column(name = "name")
     private String name;
-
-    public Role(String name) {
-        this.name = name;
-    }
 
     @Override
     public String getAuthority() {

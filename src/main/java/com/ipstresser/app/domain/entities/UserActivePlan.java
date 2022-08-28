@@ -16,13 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "user_active_plans")
-public class UserActivePlan {
-
-    @Id
-    @GeneratedValue(generator = "uuid-string")
-    @GenericGenerator(name = "uuid-string", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id")
-    private String id;
+public class UserActivePlan extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

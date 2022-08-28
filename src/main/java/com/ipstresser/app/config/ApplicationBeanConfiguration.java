@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.net.http.HttpClient;
+
 @Configuration
 public class ApplicationBeanConfiguration {
 
@@ -32,5 +34,10 @@ public class ApplicationBeanConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public HttpClient httpClient() {
+        return HttpClient.newBuilder().build();
     }
 }

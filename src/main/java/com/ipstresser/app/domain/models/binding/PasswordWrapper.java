@@ -1,5 +1,6 @@
 package com.ipstresser.app.domain.models.binding;
 
+import com.ipstresser.app.validation.PasswordMatch;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@PasswordMatch(message = "Passwords are not equal!")
 public class PasswordWrapper {
 
     @Size(min = 8, max = 30, message = "Password length must be minimum 8 characters and maximum 30 characters!")

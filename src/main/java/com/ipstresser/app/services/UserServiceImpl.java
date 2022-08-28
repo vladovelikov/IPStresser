@@ -8,6 +8,9 @@ import com.ipstresser.app.repositories.UserRepository;
 import com.ipstresser.app.services.interfaces.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
@@ -31,7 +34,7 @@ public class UserServiceImpl implements UserService {
     private final UserActivePlanService userActivePlanService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ConfirmationService confirmationService, RoleService roleService, PlanService planService, CryptocurrencyService cryptocurrencyService, TransactionService transactionService, UserActivePlanService userActivePlanService) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, ConfirmationService confirmationService, RoleService roleService, @Lazy PlanService planService, CryptocurrencyService cryptocurrencyService, TransactionService transactionService, UserActivePlanService userActivePlanService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
@@ -207,5 +210,10 @@ public class UserServiceImpl implements UserService {
         main.setEmail(modified.getEmail());
         main.setPassword(this.passwordEncoder.encode(modified.getPassword()));
         main.setImageUrl(modified.getImageUrl());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return this.userRepository.findUserByUsername(s).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }
