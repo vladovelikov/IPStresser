@@ -145,7 +145,7 @@
                                         <div>
                                             <label for="method"><i class="zmdi zmdi-view-dashboard"></i> Method</label>
                                             <select th:field="*{method}" class="form-control" id="method" name="method">
-                                                <option th:each="method:${T(com.stressthem.app.domain.MethodType).values()}"
+                                                <option th:each="method:${T(com.ipstresser.app.domain.entities.MethodType).values()}"
                                                         th:text="${method}" th:value="${method}"></option>
                                             </select>
                                         </div>

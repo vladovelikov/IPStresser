@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -35,7 +36,9 @@ public class AttackServiceImpl implements AttackService {
 
     @Override
     public List<AttackServiceModel> getAllAttacksForCurrentUser(String username) {
-        return List.of(this.modelMapper.map(this.attackRepository.findAllByAttacker_Username(username), AttackServiceModel.class));
+        List<Attack> attacks = this.attackRepository.findAllByAttacker_Username(username);
+
+        return Arrays.asList(this.modelMapper.map(attacks, AttackServiceModel[].class));
     }
 
     @Override

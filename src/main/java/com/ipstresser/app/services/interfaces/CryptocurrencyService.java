@@ -9,4 +9,5 @@ public interface CryptocurrencyService {
     List<CryptocurrencyServiceModel> getAllCryptocurrencies();
     CryptocurrencyServiceModel getCryptocurrencyByName(String name);
     void deleteById(String id);
+    CryptocurrencyServiceModel registerCryptocurrency(CryptocurrencyServiceModel cryptocurrencyServiceModel, String username);
 }

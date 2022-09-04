@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -66,8 +67,8 @@ public class HomeController {
         if (username != null) {
             model.addAttribute("availableAttacks", this.userService.getUserAvailableAttacks(username));
             model.addAttribute("userId", userId);
-            model.addAttribute("attacksHistory", List.of(this.modelMapper.map(
-                    this.attackService.getAllAttacksForCurrentUser(username), AttackViewModel.class)));
+            model.addAttribute("attacksHistory", Arrays.asList(this.modelMapper
+                    .map(this.attackService.getAllAttacksForCurrentUser(username), AttackViewModel[].class)));
             model.addAttribute("hasRated", this.commentService.hasUserAlreadyCommented(username));
             model.addAttribute("hasUserActivePlan", this.userService.hasUserActivePlan(username));
             model.addAttribute("hasTransaction", this.transactionService.hasUserTransactions(username));
@@ -108,7 +109,7 @@ public class HomeController {
         return "redirect:/home/launch";
     }
 
-    @GetMapping("/accouncements")
+    @GetMapping("/announcements")
     public String announcements(Model model) {
         model.addAttribute("announcements", this.modelMapper.map(this.announcementService.getAllAnnouncements(), AnnouncementViewModel.class));
         return "home-announcements";

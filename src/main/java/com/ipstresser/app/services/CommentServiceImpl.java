@@ -3,6 +3,7 @@ package com.ipstresser.app.services;
 import com.ipstresser.app.domain.entities.Comment;
 import com.ipstresser.app.domain.models.service.CommentServiceModel;
 import com.ipstresser.app.domain.models.service.UserServiceModel;
+import com.ipstresser.app.exceptions.CommentNotFoundException;
 import com.ipstresser.app.repositories.CommentRepository;
 import com.ipstresser.app.services.interfaces.CommentService;
 import com.ipstresser.app.services.interfaces.UserService;
@@ -48,6 +49,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteCommentById(String id) {
-        this.commentRepository.deleteById(id);
+        Comment comment = this.commentRepository.findById(id).orElseThrow(()->{
+            throw new CommentNotFoundException("The comment is not found!");
+        });
+
+        this.commentRepository.delete(comment);
     }
 }
