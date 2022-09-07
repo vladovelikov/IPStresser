@@ -4,15 +4,13 @@ import com.ipstresser.app.domain.entities.*;
 import com.ipstresser.app.domain.models.service.CryptocurrencyServiceModel;
 import com.ipstresser.app.domain.models.service.PlanServiceModel;
 import com.ipstresser.app.domain.models.service.UserServiceModel;
+import com.ipstresser.app.exceptions.ChangeRoleException;
 import com.ipstresser.app.exceptions.CommentNotFoundException;
 import com.ipstresser.app.exceptions.UserDeletionException;
 import com.ipstresser.app.exceptions.UserPlanActivationException;
 import com.ipstresser.app.repositories.UserRepository;
 import com.ipstresser.app.services.UserServiceImpl;
-import com.ipstresser.app.services.interfaces.CryptocurrencyService;
-import com.ipstresser.app.services.interfaces.PlanService;
-import com.ipstresser.app.services.interfaces.TransactionService;
-import com.ipstresser.app.services.interfaces.UserActivePlanService;
+import com.ipstresser.app.services.interfaces.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -42,6 +41,9 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private RoleService roleService;
 
     @Mock
     private CryptocurrencyService cryptocurrencyService;
@@ -191,6 +193,96 @@ public class UserServiceTest {
         this.userService.deleteUserById("1");
         Mockito.verify(this.userService).deleteUserById("1");
     }
+
+    @Test
+    public void getUserByUsernameShouldReturnUserServiceModel() {
+        Mockito.when(this.userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(this.user));
+        Mockito.when(this.modelMapper.map(this.user, UserServiceModel.class)).thenReturn(this.userServiceModel);
+        UserServiceModel actual = userService.getUserByUsername("vladimir");
+        assertEquals(actual, userServiceModel);
+    }
+
+    @Test
+    public void getUserByUsernameShouldReturnNullIfUserIsInvalid() {
+        Mockito.when(userRepository.findUserByUsername("vlado")).thenReturn(Optional.empty());
+        assertNull(userService.getUserByUsername("vlado"));
+    }
+
+    @Test
+    public void loadUserByUsernameShouldThrowUserNotFoundException() {
+        Mockito.when(userRepository.findUserByUsername("test")).thenReturn(Optional.empty());
+        assertThrows(UsernameNotFoundException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                userService.loadUserByUsername("test");
+            }
+        });
+    }
+
+
+
+    @Test
+    public void changeUserRoleShouldRemoveRoleIfEverythingIsOK() {
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(roleService.getRoleByName("ADMIN")).thenReturn(adminRole);
+
+        userService.changeUserRole("vladimir", "ADMIN", "Remove", "gosho");
+        assertFalse(user.getRoles().contains(adminRole));
+        assertEquals(1, user.getRoles().size());
+    }
+
+    @Test
+    public void changeUserRoleShouldAddRoleIfEverythingIsOk() {
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(roleService.getRoleByName("USER")).thenReturn(userRole);
+
+        userService.changeUserRole("vladimir", "ROOT", "Add", "gosho");
+        assertTrue(user.getRoles().contains(rootRole));
+        assertEquals(2, user.getRoles().size());
+    }
+
+    @Test
+    public void changeUserRoleShouldThrowChangeRoleException_UserDoesntHaveThisRole() {
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(roleService.getRoleByName("ROOT")).thenReturn(userRole);
+
+        assertThrows(ChangeRoleException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                userService.changeUserRole("vladimir", "ROOT", "Remove", "vladimir");
+            }
+        });
+    }
+
+    @Test
+    public void changeUserRoleShouldThrowChangeRoleException_SameUser() {
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(roleService.getRoleByName("USER")).thenReturn(userRole);
+
+        assertThrows(ChangeRoleException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                userService.changeUserRole("vladimir", "ROOT", "Add", "vladimir");
+            }
+        });
+    }
+
+    @Test
+    public void changeUserRoleShouldThrowChangeRoleException_UserAlreadyHasThatRole() {
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(roleService.getRoleByName("ADMIN")).thenReturn(userRole);
+
+        assertThrows(ChangeRoleException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                userService.changeUserRole("vladimir", "ADMIN", "Add", "gosho");
+            }
+        });
+    }
+
+
+
+
 
 
 

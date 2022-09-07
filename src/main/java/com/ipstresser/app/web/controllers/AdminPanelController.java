@@ -56,7 +56,7 @@ public class AdminPanelController {
     }
 
     @PostMapping("/user-roles")
-    public String changeRole(@RequestParam String username, @RequestParam String role, @RequestParam String type,
+    public String postChangeRole(@RequestParam String username, @RequestParam String role, @RequestParam String type,
                              Principal principal, RedirectAttributes redirectAttributes) {
         try {
             this.userService.changeUserRole(username, role, type, principal.getName());
@@ -102,7 +102,7 @@ public class AdminPanelController {
     }
 
     @PostMapping("/add-article")
-    public String addArticle(@Valid @ModelAttribute("article") ArticleBindingModel articleBindingModel, BindingResult bindingResult,
+    public String postAddArticle(@Valid @ModelAttribute("article") ArticleBindingModel articleBindingModel, BindingResult bindingResult,
                              RedirectAttributes redirectAttributes, Principal principal) {
 
         if (bindingResult.hasErrors()) {
@@ -127,7 +127,7 @@ public class AdminPanelController {
     }
 
     @PostMapping("/add-announcement")
-    public String addAnnouncement(@Valid @ModelAttribute("announcement") AnnouncementBindingModel announcementBindingModel, BindingResult bindingResult,
+    public String postAddAnnouncement(@Valid @ModelAttribute("announcement") AnnouncementBindingModel announcementBindingModel, BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes, Principal principal) {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("announcement", announcementBindingModel);
@@ -150,7 +150,7 @@ public class AdminPanelController {
     }
 
     @PostMapping("/delete-user")
-    public String deleteUser(@RequestParam String username, Principal principal, RedirectAttributes redirectAttributes) {
+    public String postDeleteUser(@RequestParam String username, Principal principal, RedirectAttributes redirectAttributes) {
         try {
             this.userService.deleteUserByUsername(username, principal.getName());
         } catch (UserDeletionException ex) {
