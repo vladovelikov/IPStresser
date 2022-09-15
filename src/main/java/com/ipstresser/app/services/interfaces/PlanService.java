@@ -11,4 +11,6 @@ public interface PlanService {
     PlanServiceModel getPlanById(String id);
 
     void deletePlanById(String id);
+
+    PlanServiceModel register(PlanServiceModel planServiceModel, String username);
 }

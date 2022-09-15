@@ -4,10 +4,8 @@ import com.ipstresser.app.domain.entities.Role;
 import com.ipstresser.app.domain.models.binding.AnnouncementBindingModel;
 import com.ipstresser.app.domain.models.binding.ArticleBindingModel;
 import com.ipstresser.app.domain.models.binding.CryptocurrencyBindingModel;
-import com.ipstresser.app.domain.models.service.AnnouncementServiceModel;
-import com.ipstresser.app.domain.models.service.ArticleServiceModel;
-import com.ipstresser.app.domain.models.service.CryptocurrencyServiceModel;
-import com.ipstresser.app.domain.models.service.UserServiceModel;
+import com.ipstresser.app.domain.models.binding.PlanBindingModel;
+import com.ipstresser.app.domain.models.service.*;
 import com.ipstresser.app.exceptions.ChangeRoleException;
 import com.ipstresser.app.exceptions.UserDeletionException;
 import com.ipstresser.app.services.interfaces.*;
@@ -33,17 +31,19 @@ public class AdminPanelController {
     private final RoleService roleService;
     private final ArticleService articleService;
     private final CryptocurrencyService cryptocurrencyService;
+    private final PlanService planService;
     private final AnnouncementService announcementService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public AdminPanelController(UserService userService, RoleService roleService, ArticleService articleService, CryptocurrencyService cryptocurrencyService, AnnouncementService announcementService, ModelMapper modelMapper) {
+    public AdminPanelController(UserService userService, RoleService roleService, ArticleService articleService, CryptocurrencyService cryptocurrencyService, PlanService planService, AnnouncementService announcementService, ModelMapper modelMapper) {
         this.userService = userService;
         this.roleService = roleService;
         this.articleService = articleService;
         this.cryptocurrencyService = cryptocurrencyService;
         this.announcementService = announcementService;
         this.modelMapper = modelMapper;
+        this.planService = planService;
     }
 
     @PageTitle("Change roles")
@@ -114,6 +114,33 @@ public class AdminPanelController {
         }
 
         return "redirect:/admin/add-article";
+    }
+
+    @PageTitle("Add plan")
+    @GetMapping("/add-plan")
+    public String addPlan(Model model){
+        if(!model.containsAttribute("plan")){
+            model.addAttribute("plan",new PlanBindingModel());
+        }
+
+
+        return "admin-panel-add-plan";
+    }
+
+
+    @PostMapping("/add-plan")
+    public String postAddPlan(@Valid @ModelAttribute PlanBindingModel planBindingModel,BindingResult result,RedirectAttributes redirectAttributes,
+                              Principal principal){
+
+        if(result.hasErrors()){
+            redirectAttributes.addFlashAttribute("plan",planBindingModel);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.plan",result);
+        }else{
+            this.planService.register(this.modelMapper.map(planBindingModel,
+                    PlanServiceModel.class),principal.getName());
+        }
+
+        return "redirect:/admin/add-plan";
     }
 
     @PageTitle("Add announcement")
