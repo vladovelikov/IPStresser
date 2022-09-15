@@ -41,7 +41,7 @@ public class AnnouncementServiceImpl implements AnnouncementService {
 
     @Override
     public List<AnnouncementServiceModel> getAllAnnouncements() {
-        return List.of(this.modelMapper.map(this.announcementRepository.findAllByOrderByAddedOnDesc(), AnnouncementServiceModel.class));
+        return List.of(this.modelMapper.map(this.announcementRepository.findAllByOrderByAddedOnDesc(), AnnouncementServiceModel[].class));
     }
 
     @Override

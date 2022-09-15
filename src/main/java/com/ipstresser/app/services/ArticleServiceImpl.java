@@ -38,7 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleServiceModel> getAllArticles() {
-        return List.of(this.modelMapper.map(this.articleRepository.findAllByOrderByAddedOnDesc(), ArticleServiceModel.class));
+        return List.of(this.modelMapper.map(this.articleRepository.findAllByOrderByAddedOnDesc(), ArticleServiceModel[].class));
     }
 
     @Override

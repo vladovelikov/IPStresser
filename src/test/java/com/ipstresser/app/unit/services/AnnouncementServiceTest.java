@@ -27,14 +27,15 @@ public class AnnouncementServiceTest {
     @Mock
     private AnnouncementRepository announcementRepository;
 
-    @InjectMocks
-    private AnnouncementServiceImpl announcementService;
-
     @Mock
     private UserService userService;
 
     @Mock
     private ModelMapper modelMapper;
+
+    @InjectMocks
+    private AnnouncementServiceImpl announcementService;
+
     private User user;
     private UserServiceModel userServiceModel;
     private Announcement announcement;
@@ -43,8 +44,8 @@ public class AnnouncementServiceTest {
     @BeforeEach
     public void init() {
         this.user = new User();
-        this.user.setId("1");
-        this.user.setUsername("vladimir");
+        user.setId("1");
+        user.setUsername("vladimir");
 
         this.announcement = new Announcement();
         this.announcement.setId("1");
@@ -59,24 +60,24 @@ public class AnnouncementServiceTest {
 
     @Test
     public void registerAnnouncementShouldWorkCorrect() {
-        Mockito.when(this.userService.getUserByUsername("vladimir")).thenReturn(this.userServiceModel);
-        Mockito.when(this.modelMapper.map(this.announcementServiceModel, Announcement.class)).thenReturn(this.announcement);
+        Mockito.when(modelMapper.map(userServiceModel,User.class)).thenReturn(user);
+        Mockito.when(userService.getUserByUsername("vladimir")).thenReturn(userServiceModel);
+        Mockito.when(modelMapper.map(announcementServiceModel,Announcement.class)).thenReturn(announcement);
 
-        this.announcementService.registerAnnouncement(this.announcementServiceModel, "vladimir");
-        Mockito.verify(this.announcementRepository).save(this.announcement);
+        announcementService.registerAnnouncement(announcementServiceModel, "vladimir");
+        Mockito.verify(announcementRepository).save(announcement);
     }
 
     @Test
     public void getAllAnnouncementsShouldReturnCorrect() {
-        Mockito.when(this.announcementService.getAllAnnouncements()).thenReturn(List.of(announcementServiceModel));
-        Mockito.when(this.modelMapper.map(
-                this.announcementRepository.findAllByOrderByAddedOnDesc(), AnnouncementServiceModel[].class))
+        Mockito.when(modelMapper.map(
+                announcementRepository.findAllByOrderByAddedOnDesc(), AnnouncementServiceModel[].class))
                 .thenReturn(new AnnouncementServiceModel[]{announcementServiceModel});
 
-        List<AnnouncementServiceModel> actual = this.announcementService.getAllAnnouncements();
+        List<AnnouncementServiceModel> actual = announcementService.getAllAnnouncements();
 
         assertEquals(1, actual.size());
-        assertEquals(this.announcementServiceModel, actual.get(0));
+        assertEquals(announcementServiceModel, actual.get(0));
     }
 
     @Test

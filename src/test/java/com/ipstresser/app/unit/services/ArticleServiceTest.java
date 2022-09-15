@@ -63,31 +63,31 @@ public class ArticleServiceTest {
 
     @Test
     public void getAllArticlesShouldReturnCorrect() {
-        Mockito.when(this.articleRepository.findAllByOrderByAddedOnDesc()).thenReturn(List.of(this.article));
-        Mockito.when(this.modelMapper.map(this.articleRepository.findAllByOrderByAddedOnDesc(), ArticleServiceModel[].class))
+        Mockito.when(articleRepository.findAllByOrderByAddedOnDesc()).thenReturn(List.of(article));
+        Mockito.when(modelMapper.map(articleRepository.findAllByOrderByAddedOnDesc(), ArticleServiceModel[].class))
                 .thenReturn(List.of(articleServiceModel).toArray(ArticleServiceModel[]::new));
-        List<ArticleServiceModel> actual = this.articleService.getAllArticles();
+        List<ArticleServiceModel> actual = articleService.getAllArticles();
 
         assertEquals(1, actual.size());
-        assertEquals(this.articleServiceModel, actual.get(0));
+        assertEquals(articleServiceModel, actual.get(0));
     }
 
     @Test
     @WithMockUser(roles = {"ADMIN", "ROOT"})
     public void deleteArticleByIdShouldWork() {
-        this.articleRepository.deleteById("1");
-        Mockito.verify(this.articleRepository).deleteById("1");
+        articleRepository.deleteById("1");
+        Mockito.verify(articleRepository).deleteById("1");
     }
 
     @Test
     public void getArticleByIdShouldReturnArticleIdCorrect() {
-        Mockito.when(this.articleRepository.findById("1")).thenReturn(Optional.of(this.article));
-        Mockito.when(this.modelMapper.map(
-                this.articleRepository.findById("1"), ArticleServiceModel.class)).thenReturn(this.articleServiceModel);
+        Mockito.when(articleRepository.findById("1")).thenReturn(Optional.of(article));
+        Mockito.when(modelMapper.map(
+                articleRepository.findById("1").get(), ArticleServiceModel.class)).thenReturn(articleServiceModel);
 
-        ArticleServiceModel actual = this.articleService.getArticleById("1");
+        ArticleServiceModel actual = articleService.getArticleById("1");
 
-        assertEquals(this.articleServiceModel, actual);
+        assertEquals(articleServiceModel, actual);
     }
 
     @Test
