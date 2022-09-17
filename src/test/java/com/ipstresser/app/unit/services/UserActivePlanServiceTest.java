@@ -41,7 +41,7 @@ public class UserActivePlanServiceTest {
     @Test
     public void decreaseLeftDaysShouldWorkCorrect() {
         userActivePlanService.decreaseLeftDays();
-        Mockito.verify(userActivePlanService).decreaseLeftDays();
+        Mockito.verify(userActivePlanRepository).decreaseLeftDays();
     }
 
     @Test
@@ -53,13 +53,13 @@ public class UserActivePlanServiceTest {
     @Test
     public void refreshLeftAttacksShouldWorkCorrect() {
         userActivePlanService.refreshLeftAttacks();
-        Mockito.verify(userActivePlanService).refreshLeftAttacks();
+        Mockito.verify(userActivePlanRepository).refreshLeftAttacksForTheDay();
     }
 
     @Test
     public void saveActivatedPlanShouldWorkCorrect() {
-        userActivePlanRepository.save(userActivePlan);
-        Mockito.verify(userActivePlanService).saveActivatedPlan(userActivePlan);
+        userActivePlanService.saveActivatedPlan(userActivePlan);
+        Mockito.verify(userActivePlanRepository).save(userActivePlan);
     }
 
 

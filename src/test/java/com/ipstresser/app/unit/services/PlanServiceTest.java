@@ -120,8 +120,8 @@ public class PlanServiceTest {
     @Test
     @WithMockUser(roles = {"ADMIN","ROOT"})
     public void deletePlanByIdShouldWorkCorrect() {
-        this.planService.deletePlanById("1");
-        Mockito.verify(this.planService).deletePlanById("1");
+        planService.deletePlanById("1");
+        Mockito.verify(planRepository).deleteById("1");
     }
 
 

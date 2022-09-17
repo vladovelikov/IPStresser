@@ -31,7 +31,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     public List<PlanServiceModel> getAllPlans() {
-        return List.of(this.modelMapper.map(this.planRepository.findAll(), PlanServiceModel.class));
+        return List.of(this.modelMapper.map(this.planRepository.findAll(), PlanServiceModel[].class));
     }
 
     @Override

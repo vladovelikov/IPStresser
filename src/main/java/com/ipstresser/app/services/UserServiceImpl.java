@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public List<UserServiceModel> getAllUsers() {
-        return List.of(this.modelMapper.map(this.userRepository.findAll(), UserServiceModel.class));
+        return List.of(this.modelMapper.map(this.userRepository.findAll(), UserServiceModel[].class));
     }
 
     @Override

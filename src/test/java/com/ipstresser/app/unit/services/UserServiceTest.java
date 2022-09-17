@@ -98,8 +98,8 @@ public class UserServiceTest {
 
     @Test
     public void getUserByEmailShouldReturnUser() {
-        Mockito.when(this.userRepository.findUserByEmail("vladimir")).thenReturn(Optional.of(this.user));
-        Mockito.when(this.modelMapper.map(this.user, UserServiceModel.class)).thenReturn(this.userServiceModel);
+        Mockito.when(userRepository.findUserByEmail("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(modelMapper.map(user, UserServiceModel.class)).thenReturn(userServiceModel);
         UserServiceModel actual = userService.getUserByEmail("vladimir");
         assertEquals(user.getId(), actual.getId());
         assertEquals(user.getUsername(), actual.getUsername());
@@ -107,79 +107,78 @@ public class UserServiceTest {
 
     @Test
     public void getUserByEmailShouldReturnNull() {
-        Mockito.when(this.userRepository.findUserByEmail("dsb")).thenReturn(Optional.empty());
-        assertNull(this.userRepository.findUserByEmail("dsb"));
+        Mockito.when(userRepository.findUserByEmail("dsb")).thenReturn(null);
+        assertNull(userRepository.findUserByEmail("dsb"));
     }
 
     @Test
     public void hasUserActivePlanShouldWork() {
-        Mockito.when(this.userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(this.user));
-        this.user.setUserActivePlan(new UserActivePlan(null, 15, 1, null));
-        assertTrue(this.userService.hasUserActivePlan("vladimir"));
-        this.user.setUserActivePlan(null);
-        assertFalse(this.userService.hasUserActivePlan("vladimir"));
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        user.setUserActivePlan(new UserActivePlan(null, 15, 1, null));
+        assertTrue(userService.hasUserActivePlan("vladimir"));
+        user.setUserActivePlan(null);
+        assertFalse(userService.hasUserActivePlan("vladimir"));
     }
 
     @Test
     public void purchasePlanShouldThrowExceptionIfUserAlreadyHasPlan() {
-        Mockito.when(this.userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(this.user));
-        Mockito.when(this.planService.getPlanById("1")).thenReturn(new PlanServiceModel());
-        Mockito.when(this.cryptocurrencyService.getCryptocurrencyByName("Bitcoin")).thenReturn(new CryptocurrencyServiceModel());
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(planService.getPlanById("1")).thenReturn(new PlanServiceModel());
+        Mockito.when(cryptocurrencyService.getCryptocurrencyByName("Bitcoin")).thenReturn(new CryptocurrencyServiceModel());
 
-        Mockito.when(this.modelMapper.map(this.planService.getPlanById("1"), Plan.class)).thenReturn(new Plan());
-        Mockito.when(this.modelMapper.map(this.cryptocurrencyService.getCryptocurrencyByName("bitcoin"), Cryptocurrency.class)).thenReturn(new Cryptocurrency());
+        Mockito.when(modelMapper.map(planService.getPlanById("1"), Plan.class)).thenReturn(new Plan());
+        Mockito.when(modelMapper.map(cryptocurrencyService.getCryptocurrencyByName("Bitcoin"), Cryptocurrency.class)).thenReturn(new Cryptocurrency());
 
         this.user.setUserActivePlan(new UserActivePlan(null, 15, 1, null));
 
         assertThrows(UserPlanActivationException.class, () -> {
-            this.userService.purchasePlan("1", "vladimir", "bitcoin");
+            userService.purchasePlan("1", "vladimir", "Bitcoin");
         });
     }
 
     @Test
     public void purchasePlanShouldWork() {
-        Mockito.when(this.userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(this.user));
-        Mockito.when(this.planService.getPlanById("1")).thenReturn(new PlanServiceModel());
-        Mockito.when(this.cryptocurrencyService.getCryptocurrencyByName("bitcoin")).thenReturn(new CryptocurrencyServiceModel());
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(planService.getPlanById("1")).thenReturn(new PlanServiceModel());
+        Mockito.when(cryptocurrencyService.getCryptocurrencyByName("bitcoin")).thenReturn(new CryptocurrencyServiceModel());
 
-        Mockito.when(this.modelMapper.map(this.planService.getPlanById("1"), Plan.class)).thenReturn(new Plan());
-        Mockito.when(this.modelMapper.map(this.cryptocurrencyService.getCryptocurrencyByName("bitcoin"), Cryptocurrency.class)).thenReturn(new Cryptocurrency());
+        Mockito.when(modelMapper.map(planService.getPlanById("1"), Plan.class)).thenReturn(new Plan());
+        Mockito.when(modelMapper.map(cryptocurrencyService.getCryptocurrencyByName("bitcoin"), Cryptocurrency.class)).thenReturn(new Cryptocurrency());
 
-        this.userService.purchasePlan("1", "vladimir", "bitcoin");
+        userService.purchasePlan("1", "vladimir", "bitcoin");
 
-        Mockito.verify(this.userActivePlanService).saveActivatedPlan(ArgumentMatchers.any());
-        Mockito.verify(this.transactionService).saveTransaction(ArgumentMatchers.any());
+        Mockito.verify(userActivePlanService).saveActivatedPlan(ArgumentMatchers.any());
+        Mockito.verify(transactionService).saveTransaction(ArgumentMatchers.any());
     }
 
     @Test
     public void getUsersAvailableAttacksShouldWork() {
-        Mockito.when(this.userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(this.user));
-        this.user.setUserActivePlan(new UserActivePlan(null, 15, 1, null));
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        user.setUserActivePlan(new UserActivePlan(null, 15, 1, null));
 
-        assertEquals(1, this.userService.getUserAvailableAttacks("vladimir"));
+        assertEquals(1, userService.getUserAvailableAttacks("vladimir"));
     }
 
     @Test
     public void getAllUsersShouldReturnAllUsers() {
-        Mockito.when(this.userRepository.findAll()).thenReturn(List.of(this.user));
-        Mockito.when(this.modelMapper.map(this.userRepository.findAll(), UserServiceModel[].class))
+        Mockito.when(userRepository.findAll()).thenReturn(List.of(user));
+        Mockito.when(modelMapper.map(userRepository.findAll(), UserServiceModel[].class))
                 .thenReturn(new UserServiceModel[]{userServiceModel});
 
-        List<UserServiceModel> actual = this.userService.getAllUsers();
+        List<UserServiceModel> actual = userService.getAllUsers();
 
         assertEquals(1, actual.size());
     }
 
     @Test
     public void deleteUserByUsernameShouldWork() {
-        Mockito.when(this.userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(this.user));
-        this.userService.deleteUserByUsername("vladimir", "ivan");
-        Mockito.verify(this.userRepository).deleteById("1");
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        userService.deleteUserByUsername("vladimir", "ivan");
+        Mockito.verify(userRepository).deleteById("1");
     }
 
     @Test
     public void deleteUserByUsernameShouldThrowException() {
-        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
         assertThrows(UserDeletionException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
@@ -191,13 +190,13 @@ public class UserServiceTest {
     @Test
     public void deleteByIdShouldDeleteUser() {
         this.userService.deleteUserById("1");
-        Mockito.verify(this.userService).deleteUserById("1");
+        Mockito.verify(userRepository).deleteById("1");
     }
 
     @Test
     public void getUserByUsernameShouldReturnUserServiceModel() {
-        Mockito.when(this.userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(this.user));
-        Mockito.when(this.modelMapper.map(this.user, UserServiceModel.class)).thenReturn(this.userServiceModel);
+        Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
+        Mockito.when(modelMapper.map(user, UserServiceModel.class)).thenReturn(userServiceModel);
         UserServiceModel actual = userService.getUserByUsername("vladimir");
         assertEquals(actual, userServiceModel);
     }
@@ -236,9 +235,9 @@ public class UserServiceTest {
         Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
         Mockito.when(roleService.getRoleByName("USER")).thenReturn(userRole);
 
-        userService.changeUserRole("vladimir", "ROOT", "Add", "gosho");
+        userService.changeUserRole("vladimir", "USER", "Add", "gosho");
         assertTrue(user.getRoles().contains(rootRole));
-        assertEquals(2, user.getRoles().size());
+        assertEquals(3, user.getRoles().size());
     }
 
     @Test
@@ -262,7 +261,7 @@ public class UserServiceTest {
         assertThrows(ChangeRoleException.class, new Executable() {
             @Override
             public void execute() throws Throwable {
-                userService.changeUserRole("vladimir", "ROOT", "Add", "vladimir");
+                userService.changeUserRole("vladimir", "USER", "Add", "vladimir");
             }
         });
     }
@@ -270,7 +269,7 @@ public class UserServiceTest {
     @Test
     public void changeUserRoleShouldThrowChangeRoleException_UserAlreadyHasThatRole() {
         Mockito.when(userRepository.findUserByUsername("vladimir")).thenReturn(Optional.of(user));
-        Mockito.when(roleService.getRoleByName("ADMIN")).thenReturn(userRole);
+        Mockito.when(roleService.getRoleByName("ADMIN")).thenReturn(adminRole);
 
         assertThrows(ChangeRoleException.class, new Executable() {
             @Override
