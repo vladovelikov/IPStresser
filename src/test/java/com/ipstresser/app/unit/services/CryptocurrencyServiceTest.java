@@ -78,11 +78,11 @@ public class CryptocurrencyServiceTest {
 
     @Test
     public void getAllCryptocurrenciesShouldReturnAllEntities() {
-        Mockito.when(this.cryptocurrencyRepository.findAll()).thenReturn(List.of(cryptocurrencyOne, cryptocurrencyTwo));
-        Mockito.when(this.modelMapper.map(this.cryptocurrencyRepository.findAll(), CryptocurrencyServiceModel[].class))
-                .thenReturn(List.of(this.cryptoServiceModelOne, this.cryptoServiceModelTwo).toArray(CryptocurrencyServiceModel[]::new));
+        Mockito.when(cryptocurrencyRepository.findAll()).thenReturn(List.of(cryptocurrencyOne, cryptocurrencyTwo));
+        Mockito.when(modelMapper.map(cryptocurrencyRepository.findAll(), CryptocurrencyServiceModel[].class))
+                .thenReturn(List.of(cryptoServiceModelOne, cryptoServiceModelTwo).toArray(CryptocurrencyServiceModel[]::new));
 
-        List<CryptocurrencyServiceModel> actual = this.cryptocurrencyService.getAllCryptocurrencies();
+        List<CryptocurrencyServiceModel> actual = cryptocurrencyService.getAllCryptocurrencies();
 
         assertEquals(2, actual.size());
 
@@ -90,14 +90,14 @@ public class CryptocurrencyServiceTest {
 
     @Test
     public void getCryptocurrencyByNameShouldReturnCorrect() {
-        Mockito.when(this.cryptocurrencyRepository.findByTitle("Ethereum")).thenReturn(Optional.of(this.cryptocurrencyTwo));
-        Mockito.when(this.modelMapper.map(this.cryptocurrencyOne, CryptocurrencyServiceModel.class))
-                .thenReturn(cryptoServiceModelOne);
+        Mockito.when(cryptocurrencyRepository.findByTitle("Ethereum")).thenReturn(Optional.of(cryptocurrencyTwo));
+        Mockito.when(modelMapper.map(cryptocurrencyTwo, CryptocurrencyServiceModel.class))
+                .thenReturn(cryptoServiceModelTwo);
 
-        CryptocurrencyServiceModel actual = this.cryptocurrencyService.getCryptocurrencyByName("Ethereum");
+        CryptocurrencyServiceModel actual = cryptocurrencyService.getCryptocurrencyByName("Ethereum");
 
-        assertEquals(cryptoServiceModelOne.getTitle(), actual.getTitle());
-        assertEquals(cryptoServiceModelOne.getAuthor(), actual.getAuthor());
+        assertEquals(cryptoServiceModelTwo.getTitle(), actual.getTitle());
+        assertEquals(cryptoServiceModelTwo.getAuthor(), actual.getAuthor());
         Mockito.verify(this.cryptocurrencyRepository).findByTitle("Ethereum");
 
     }

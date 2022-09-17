@@ -33,7 +33,7 @@ public class CryptocurrencyServiceImpl implements CryptocurrencyService {
     @Override
     public List<CryptocurrencyServiceModel> getAllCryptocurrencies() {
         List<Cryptocurrency> cryptocurrencies = this.cryptocurrencyRepository.findAll();
-        return List.of(this.modelMapper.map(cryptocurrencies, CryptocurrencyServiceModel.class));
+        return List.of(this.modelMapper.map(cryptocurrencies, CryptocurrencyServiceModel[].class));
     }
 
     @Override

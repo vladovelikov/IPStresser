@@ -17,6 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.test.context.support.WithMockUser;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,11 +54,13 @@ public class ArticleServiceTest {
         this.article.setId("1");
         this.article.setTitle("Test");
         this.article.setAuthor(this.user);
+        this.article.setAddedOn(LocalDateTime.now(ZoneId.systemDefault()));
 
         this.articleServiceModel = new ArticleServiceModel();
         this.articleServiceModel.setId("1");
         this.articleServiceModel.setTitle("Test");
         this.articleServiceModel.setAuthor(this.user);
+        this.articleServiceModel.setAddedOn(LocalDateTime.now(ZoneId.systemDefault()));
 
         this.userServiceModel = new UserServiceModel();
     }
@@ -92,11 +96,12 @@ public class ArticleServiceTest {
 
     @Test
     public void registerArticleShouldWork() {
-        Mockito.when(this.userService.getUserByUsername("vladimir")).thenReturn(this.userServiceModel);
-        Mockito.when(this.modelMapper.map(this.userServiceModel, User.class)).thenReturn(this.user);
+        Mockito.when(userService.getUserByUsername("vladimir")).thenReturn(userServiceModel);
+        Mockito.when(modelMapper.map(userServiceModel, User.class)).thenReturn(user);
+        Mockito.when(modelMapper.map(articleServiceModel, Article.class)).thenReturn(article);
 
-        this.articleService.registerArticle(this.articleServiceModel, "vladimir");
-        Mockito.verify(this.articleRepository).save(this.article);
+        articleService.registerArticle(articleServiceModel, "vladimir");
+        Mockito.verify(articleRepository).save(article);
 
     }
 }
