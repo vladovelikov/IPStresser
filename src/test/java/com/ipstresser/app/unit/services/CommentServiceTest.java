@@ -53,24 +53,28 @@ public class CommentServiceTest {
         this.user = new UserServiceModel();
         this.user.setUsername("vladimir");
         this.user.setComment(commentServiceModel);
+
+        this.commentRepository.save(this.comment);
     }
 
     @Test
     public void getAllCommentsShouldReturnAllComments() {
-        List<Comment> comments = List.of(this.comment);
+        List<Comment> comments = List.of(comment);
         Mockito.when(commentRepository.findAllByOrderByRateDesc()).thenReturn(comments);
+        Mockito.when(modelMapper.map(comments, CommentServiceModel[].class))
+                .thenReturn(Arrays.asList(commentServiceModel).toArray(CommentServiceModel[]::new));
 
-        List<CommentServiceModel> result = this.commentService.getAllCommentsSortedByRatingDesc();
+        List<CommentServiceModel> result = commentService.getAllCommentsSortedByRatingDesc();
 
         assertEquals(1, result.size());
     }
 
     @Test
     public void deleteCommentByIdShouldWorkCorrect() {
-        Mockito.when(this.commentRepository.findById("1")).thenReturn(Optional.of(comment));
+        Mockito.when(commentRepository.findById("1")).thenReturn(Optional.of(comment));
         this.commentService.deleteCommentById("1");
 
-        Mockito.verify(this.commentRepository).delete(this.comment);
+        Mockito.verify(commentRepository).delete(comment);
     }
 
     @Test
@@ -85,17 +89,18 @@ public class CommentServiceTest {
 
     @Test
     public void hasUserAlreadyCommentedShouldWork() {
-        Mockito.when(this.commentService.hasUserAlreadyCommented(user.getUsername())).thenReturn(true);
+        Mockito.when(userService.getUserByUsername("vladimir")).thenReturn(user);
+        assertTrue(commentService.hasUserAlreadyCommented("vladimir"));
     }
 
     @Test
     public void registerCommentShouldWorkCorrect() {
         Mockito.when(userService.getUserByUsername("vladimir")).thenReturn(user);
-        Mockito.when(this.modelMapper.map(this.commentServiceModel, Comment.class)).thenReturn(this.comment);
+        Mockito.when(modelMapper.map(commentServiceModel, Comment.class)).thenReturn(comment);
 
-        this.commentService.registerComment(commentServiceModel, "vladimir");
+        commentService.registerComment(commentServiceModel, "vladimir");
 
-        Mockito.verify(this.commentRepository).save(this.comment);
+        Mockito.verify(commentRepository).save(comment);
     }
 
 

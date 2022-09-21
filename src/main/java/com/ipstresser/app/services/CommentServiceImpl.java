@@ -35,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<CommentServiceModel> getAllCommentsSortedByRatingDesc() {
         return List.of(this.modelMapper.map(
-                this.commentRepository.findAllByOrderByRateDesc(), CommentServiceModel.class));
+                this.commentRepository.findAllByOrderByRateDesc(), CommentServiceModel[].class));
     }
 
     @Override
