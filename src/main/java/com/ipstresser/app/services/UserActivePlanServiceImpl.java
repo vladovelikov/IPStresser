@@ -13,12 +13,9 @@ import java.util.List;
 public class UserActivePlanServiceImpl implements UserActivePlanService {
 
     private final UserActivePlanRepository userActivePlanRepository;
-    private final ModelMapper modelMapper;
 
-    @Autowired
-    public UserActivePlanServiceImpl(UserActivePlanRepository userActivePlanRepository, ModelMapper modelMapper) {
+    public UserActivePlanServiceImpl(UserActivePlanRepository userActivePlanRepository) {
         this.userActivePlanRepository = userActivePlanRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override

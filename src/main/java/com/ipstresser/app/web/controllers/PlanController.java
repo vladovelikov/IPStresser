@@ -40,7 +40,7 @@ public class PlanController {
     @PageTitle("All plans")
     @GetMapping
     public String allPlans(Model model) {
-        List<PlanViewModel> plans = List.of(this.modelMapper.map(this.planService.getAllPlans(), PlanViewModel.class));
+        List<PlanViewModel> plans = List.of(this.modelMapper.map(this.planService.getAllPlans(), PlanViewModel[].class));
         model.addAttribute("plans", plans);
 
         return "pricing";

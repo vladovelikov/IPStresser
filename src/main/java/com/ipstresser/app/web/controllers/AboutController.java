@@ -33,7 +33,7 @@ public class AboutController {
     @GetMapping
     public String about(Model model) {
         model.addAttribute("comments", List.of(this.modelMapper.map(
-                this.commentService.getAllCommentsSortedByRatingDesc(), CommentViewModel.class)));
+                this.commentService.getAllCommentsSortedByRatingDesc(), CommentViewModel[].class)));
 
         return "about-us";
     }
