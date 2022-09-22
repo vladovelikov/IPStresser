@@ -9,6 +9,7 @@ import com.ipstresser.app.services.interfaces.CryptocurrencyService;
 import com.ipstresser.app.services.interfaces.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class CryptocurrencyServiceImpl implements CryptocurrencyService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CryptocurrencyServiceImpl(CryptocurrencyRepository cryptocurrencyRepository, UserService userService, ModelMapper modelMapper) {
+    public CryptocurrencyServiceImpl(CryptocurrencyRepository cryptocurrencyRepository, @Lazy UserService userService, ModelMapper modelMapper) {
         this.cryptocurrencyRepository = cryptocurrencyRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
