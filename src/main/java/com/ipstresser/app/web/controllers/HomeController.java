@@ -111,7 +111,7 @@ public class HomeController {
 
     @GetMapping("/announcements")
     public String announcements(Model model) {
-        model.addAttribute("announcements", this.modelMapper.map(this.announcementService.getAllAnnouncements(), AnnouncementViewModel.class));
+        model.addAttribute("announcements", this.modelMapper.map(this.announcementService.getAllAnnouncements(), AnnouncementViewModel[].class));
         return "home-announcements";
     }
 
