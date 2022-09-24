@@ -148,6 +148,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         UserActivePlan userActivePlan = new UserActivePlan(plan, plan.getDurationInDays(), plan.getMaxBootsPerDay(),
                 LocalDateTime.now(ZoneId.systemDefault()));
+        userActivePlan.setUser(user);
 
         this.userActivePlanService.saveActivatedPlan(userActivePlan);
         this.transactionService.saveTransaction(new TransactionServiceModel(user, plan, chosenCryptocurrency, LocalDateTime.now(ZoneId.systemDefault())));
