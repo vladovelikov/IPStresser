@@ -30,7 +30,7 @@ public class CurrencyController {
     @PageTitle("All currencies")
     @GetMapping
     public String allCurrencies(Model model) {
-        model.addAttribute("cryptos", List.of(this.modelMapper.map(this.cryptocurrencyService.getAllCryptocurrencies(), CryptocurrencyViewModel.class)));
+        model.addAttribute("cryptos", List.of(this.modelMapper.map(this.cryptocurrencyService.getAllCryptocurrencies(), CryptocurrencyViewModel[].class)));
         return "currencies";
     }
 
